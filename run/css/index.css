@@ -1,0 +1,64 @@
+.mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* ==============================游戏提示========================== */
+
+.game-tips {
+    width: 51.83rem;
+    height: 64.08rem;
+    background: url(../imgs/game-tips.png) no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+
+.game-tips-btn {
+    width: 43.83rem;
+    height: 9.33rem;
+    background: url(../imgs/game-tips-btn.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: 4rem;
+    left: 4rem;
+    border: none;
+    outline: none;
+}
+
+
+/* ======================游戏说明============================== */
+.game-desc-container {
+    justify-content: flex-end;
+    gap: 20rem;
+}
+
+.game-desc {
+    width: 56.67rem;
+    height: 18rem;
+    background: url(../imgs/game-desc.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.game-desc-container>p {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 2.17rem;
+    color: #FFFFFF;
+    line-height: 3.08rem;
+    margin-bottom: 17rem;
+}
