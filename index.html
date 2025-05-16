@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>龙舟夺宝计划</title>
+    <link href="./css/index.css" rel="stylesheet" />
+    <style type="text/css">
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+        font-size: 1.6vw !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="gameCanvas"></div>
+
+    <!-- 游戏开始的提示 -->
+    <div class="mask game-tips-container">
+      <div class="game-tips">
+        <button class="game-tips-btn" />
+      </div>
+    </div>
+
+    <!-- 游戏说明 -->
+    <div class="mask game-desc-container hidden">
+      <div class="game-desc"></div>
+      <p>点击任意处继续</p>
+    </div>
+
+    <!-- 暂停 -->
+    <div class="mask pause-container hidden">
+      <div class="pause-desc">
+        <button class="common-btn continue-btn"></button>
+        <p class="leave-btn">忍痛离开</p>
+      </div>
+    </div>
+
+    <!--  游戏结束---有次数  -->
+    <div class="mask game-over-container-times hidden">
+      <div class="have-times">
+        <button class="common-btn start-btn"></button>
+      </div>
+    </div>
+
+    <!--  游戏结束---无次数  -->
+    <div class="mask game-over-container-no-times hidden">
+      <div class="no-times">
+        <button class="common-btn invite-btn"></button>
+      </div>
+    </div>
+
+    <!--  游戏通关  -->
+    <div class="mask game-success-container hidden">
+      <div class="success">
+        <h1 id="scoreNum">99999</h1>
+        <button class="common-btn lottery-btn"></button>
+        <p class="continue-text">继续游戏</p>
+      </div>
+    </div>
+
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="./js/phaser.min.js" type="text/javascript"></script>
+    <script src="./js/main.js" type="text/javascript"></script>
+    <script src="./js/index.js" type="text/javascript"></script>
+  </body>
+</html>

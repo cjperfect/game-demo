@@ -1,0 +1,204 @@
+.hidden {
+  display: none !important;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toTop {
+  z-index: 999;
+}
+
+.common-btn {
+  width: 39.33rem;
+  height: 8.67rem;
+  outline: none;
+  border: none;
+}
+
+/* ==============================游戏提示========================== */
+
+.game-tips-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-tips {
+  width: 51.83rem;
+  height: 64.08rem;
+  background: url(../assets/game-tips.png) no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+
+.game-tips-btn {
+  width: 43.83rem;
+  height: 9.33rem;
+  background: url(../assets/game-tips-btn.png) no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  bottom: 4rem;
+  left: 4rem;
+  border: none;
+  outline: none;
+}
+
+/* ======================游戏说明============================== */
+.game-desc-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20rem;
+}
+
+.game-desc {
+  width: 45rem;
+  height: 25.83rem;
+  background: url(../assets/game-desc.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.game-desc-container > p {
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 2.17rem;
+  color: #ffffff;
+  line-height: 3.08rem;
+  margin-bottom: 17rem;
+}
+
+/* ======================暂停游戏============================== */
+.pause-desc {
+  width: 62.5rem;
+  height: 63.33rem;
+  background: url(../assets/game-pause.png) no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+
+.continue-btn {
+  margin-top: 33.66rem;
+  margin-left: 11.58rem;
+  background: url(../assets/continue-btn.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.leave-btn {
+  margin-top: 1.5rem;
+  margin-left: 26.58rem;
+  width: 9.33rem;
+  height: 2.33rem;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 2.33rem;
+  color: #222222;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* ======================游戏失败---有次数============================== */
+.have-times {
+  width: 62.5rem;
+  height: 63.33rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  background-image: url(../assets/game-over-times.png);
+  background-size: 100% 100%;
+}
+
+.start-btn {
+  margin-top: 38.33rem;
+  margin-left: 11.58rem;
+  background: url(../assets/start-btn.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+/* ======================游戏失败---无次数============================== */
+
+.no-times {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  width: 62.5rem;
+  height: 63.33rem;
+  background-image: url(../assets/game-over-no-times.png);
+  background-size: 100% 100%;
+}
+
+.invite-btn {
+  margin-top: 43.17rem;
+  margin-left: 11.58rem;
+  background: url(../assets/invite-btn.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+/* ======================游戏通关============================== */
+.success {
+  width: 62.5rem;
+  height: 99rem;
+  background: url(../assets/game-success.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+#scoreNum {
+  width: 75%;
+  height: 7.33rem;
+  font-family: DOUYINSANSBOLD, DOUYINSANSBOLD;
+  font-weight: normal;
+  font-size: 7.33rem;
+  color: #222222;
+  line-height: 7.33rem;
+  margin-top: 48.42rem;
+  text-align: center;
+  margin-left: 8rem;
+}
+
+.lottery-btn {
+  margin-left: 11.58rem;
+  background: url(../assets/lottery-btn.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.continue-text {
+  margin-top: 1.5rem;
+  margin-left: 26.58rem;
+  width: 9.33rem;
+  height: 2.33rem;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 2.33rem;
+  color: #222222;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+}
