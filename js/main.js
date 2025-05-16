@@ -26,6 +26,8 @@ var textCommonConfig = {
   fontWeight: 400,
 };
 
+var scoreDom = document.querySelector(".score-num");
+
 // 游戏分数
 var score = 0;
 
@@ -92,7 +94,7 @@ var runState = function (game) {
   var obstacleTimer;
 
   // 分数对象
-  var scoreValue;
+  // var scoreValue;
 
   this.create = function () {
     game.stage.smoothed = false;
@@ -118,45 +120,45 @@ var runState = function (game) {
       game.height / bg_sprites.height
     );
 
-    // 创建左上角计分板
-    const graphics = game.add.graphics(0, 0);
-    graphics.beginFill(0xffffff, 1);
-    // 画一个圆角矩形（x, y, 宽, 高, 圆角）
-    graphics.drawRoundedRect(32, 32, 136, 30, 20);
-    // 将矩形转换为图片对象
-    graphics.endFill();
-    var scoreImg = game.add.image(20, 20, graphics.generateTexture());
-    scoreImg.smoothed = false;
-    graphics.destroy();
+    // // 创建左上角计分板
+    // const graphics = game.add.graphics(0, 0);
+    // graphics.beginFill(0xffffff, 1);
+    // // 画一个圆角矩形（x, y, 宽, 高, 圆角）
+    // graphics.drawRoundedRect(32, 32, 136, 30, 20);
+    // // 将矩形转换为图片对象
+    // graphics.endFill();
+    // var scoreImg = game.add.image(20, 20, graphics.generateTexture());
+    // scoreImg.smoothed = false;
+    // graphics.destroy();
 
-    // 分数前面的图标
-    var scoreIcon = game.add.image(20, 16, "scoreIcon");
-    score.smoothed = false;
-    scoreIcon.anchor.set(0.5, 0.5);
-    scoreIcon.scale.set(0.2);
+    // // 分数前面的图标
+    // var scoreIcon = game.add.image(20, 15, "scoreIcon");
+    // score.smoothed = false;
+    // scoreIcon.anchor.set(0.5, 0.5);
+    // scoreIcon.scale.set(0.2);
 
-    // 创建前缀文字“得分: ”
-    var prefix = game.add.text(48, 18, "得分", textCommonConfig);
-    prefix.anchor.set(0.5, 0.5);
+    // // 创建前缀文字“得分: ”
+    // var prefix = game.add.text(48, 18, "得分", textCommonConfig);
+    // prefix.anchor.set(0.5, 0.5);
 
-    scoreValue = game.add.text(prefix.x + prefix.width + 20, 18, score, {
-      ...textCommonConfig,
-      fontSize: "18px",
-    });
-    scoreValue.anchor.set(0.5, 0.5);
+    // scoreValue = game.add.text(prefix.x + prefix.width + 20, 18, score, {
+    //   ...textCommonConfig,
+    //   fontSize: "18px",
+    // });
+    // scoreValue.anchor.set(0.5, 0.5);
 
-    var suffix = game.add.text(
-      scoreValue.x + scoreValue.width + 18,
-      18,
-      "分",
-      textCommonConfig
-    );
-    suffix.anchor.set(0.5, 0.5);
+    // var suffix = game.add.text(
+    //   scoreValue.x + scoreValue.width + 18,
+    //   18,
+    //   "分",
+    //   textCommonConfig
+    // );
+    // suffix.anchor.set(0.5, 0.5);
 
-    scoreImg.addChild(scoreIcon);
-    scoreImg.addChild(prefix);
-    scoreImg.addChild(scoreValue);
-    scoreImg.addChild(suffix);
+    // scoreImg.addChild(scoreIcon);
+    // scoreImg.addChild(prefix);
+    // scoreImg.addChild(scoreValue);
+    // scoreImg.addChild(suffix);
 
     // 玩家
     running = game.add.sprite(middleLane, game.height / 2, "running");
@@ -229,7 +231,7 @@ var runState = function (game) {
       var obstacle = obstaclesGroup.create(x, -60, "obstacles", randomIndex); // 初始 y 为 -64（从上方出现）
 
       // 防止障碍物遮挡计分板, 提高计分板的层级
-      game.world.bringToTop(scoreImg);
+      // game.world.bringToTop(scoreImg);
 
       // 设置障碍物属性
       switch (randomIndex) {
@@ -339,7 +341,8 @@ var runState = function (game) {
       document.getElementById("scoreNum").innerText = score;
     }
 
-    scoreValue.text = score;
+    scoreDom.innerText = score;
+    // scoreValue.text = score;
   }
 
   this.update = function () {

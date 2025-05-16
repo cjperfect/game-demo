@@ -20,7 +20,13 @@
   </head>
 
   <body>
-    <div id="gameCanvas"></div>
+    <div id="gameCanvas">
+      <!-- 由于分数面板在canvas中表现模糊, 决定用dom实现 -->
+      <div class="score-panel">
+        <i class="icon"></i>
+        <span>得分<b class="score-num">0</b>分</span>
+      </div>
+    </div>
 
     <!-- 游戏开始的提示 -->
     <div class="mask game-tips-container">

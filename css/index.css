@@ -33,6 +33,40 @@
   border: none;
 }
 
+/* ==============================分数面板========================== */
+
+.score-panel {
+  width: 22.67rem;
+  height: 5rem;
+  background: #ffffff;
+  border-radius: 2.5rem;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 2rem;
+  color: #596061;
+  line-height: 2.75rem;
+  position: fixed;
+  top: 3.83rem;
+  left: 2.67rem;
+  display: flex;
+  align-items: center;
+}
+
+.score-panel i {
+  display: inline-block;
+  width: 3.33rem;
+  height: 3.33rem;
+  background-image: url("../assets/icon.png");
+  background-size: 100% 100%;
+  margin-left: 2.67rem;
+  margin-right: 1.25rem;
+}
+
+.score-panel b {
+  margin: 0 2.5rem;
+  font-size: 2.5rem;
+}
+
 /* ==============================游戏提示========================== */
 
 .game-tips-container {
