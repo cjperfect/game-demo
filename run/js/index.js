@@ -23,7 +23,8 @@ tipBtn.addEventListener("click", () => {
 gameDesc.addEventListener("click", (e) => {
   e.currentTarget.classList.add("hidden");
   // 启动游戏
-  game.state.start("runState");
+  // game.state.start("runState");
+  game.paused = false;
 });
 
 // 跳转到游戏启动页

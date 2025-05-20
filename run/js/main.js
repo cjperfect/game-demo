@@ -11,12 +11,7 @@ function getQueryVariable(variable) {
   return null;
 }
 
-var game = new Phaser.Game(
-  window.innerWidth,
-  window.innerHeight,
-  Phaser.CANVAS,
-  "gameCanvas"
-);
+var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.CANVAS, "gameCanvas");
 
 // 左上角积分面板文字公共配置
 var textCommonConfig = {
@@ -41,19 +36,11 @@ var isGameOver = false;
 var loaderState = function (game) {
   this.preload = function () {
     // 分数图标
-    game.load.image("scoreIcon", "assets/icon.png");
+    // game.load.image("scoreIcon", "assets/icon.png");
     // 船动画
-    game.load.atlasXML(
-      "running",
-      "assets/boat/sprites.png",
-      "assets/boat/sprites.xml"
-    );
+    game.load.atlasXML("running", "assets/boat/sprites.png", "assets/boat/sprites.xml");
     // 碰撞物资源加载
-    game.load.atlasXML(
-      "obstacles",
-      "assets/obstacle/sprites.png",
-      "assets/obstacle/sprites.xml"
-    );
+    game.load.atlasXML("obstacles", "assets/obstacle/sprites.png", "assets/obstacle/sprites.xml");
     // 分数图片, 加分
     game.load.image("addScore", "assets/addScore.png");
     // 分数图片，减分
@@ -62,21 +49,20 @@ var loaderState = function (game) {
     // 背景图片
     game.load.image("bg", "assets/bg/bg.png");
 
-    // game.load.onFileComplete.add(function (progress) {
-    //   if (progress == 100) {
-    //     game.state.start("runState");
-    //   }
-    // });
+    game.load.onFileComplete.add(function (progress) {
+      if (progress == 100) {
+        game.state.start("runState");
+      }
+    });
   };
 
   this.create = function () {
-    game.stage.smoothed = false;
-    Phaser.Canvas.setImageRenderingCrisp(game.canvas); // 仅限 Canvas 渲染器
-
-    // 占位背景
-    defaultBg = game.add.image(0, 0, "bg");
-    defaultBg.width = game.width;
-    defaultBg.height = game.height;
+    // game.stage.smoothed = false;
+    // Phaser.Canvas.setImageRenderingCrisp(game.canvas); // 仅限 Canvas 渲染器
+    // // 占位背景
+    // defaultBg = game.add.image(0, 0, "bg");
+    // defaultBg.width = game.width;
+    // defaultBg.height = game.height;
   };
 };
 
@@ -93,32 +79,38 @@ var runState = function (game) {
   // 无限生成障碍物的定时器
   var obstacleTimer;
 
+  // 每隔多少秒增加生成障碍物的时间和速度
+  var gapTime = 5;
+
   // 分数对象
   // var scoreValue;
 
   this.create = function () {
     game.stage.smoothed = false;
     Phaser.Canvas.setImageRenderingCrisp(game.canvas); // 仅限 Canvas 渲染器
+    game.paused = true;
 
     // 开启游戏物理引擎
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.pageAlignVertically = true;
+    game.scale.pageAlignHorizontally = true;
 
     // 跑道基础宽度
     var trackWidth = ~~(game.width / 3);
     // 定义三条跑道的X坐标（在变量范围内全局设置）
-    var leftLane = 30;
-    var middleLane = trackWidth + 30;
-    var rightLane = trackWidth * 2 + 30;
+    var leftLane = 20;
+    var middleLane = trackWidth + 20;
+    var rightLane = trackWidth * 2 + 20;
+    var lanes = [leftLane, middleLane, rightLane];
+    var currentLaneIndex = 1; // 初始在中间
+    var isMoving = false;
 
     // 创建背景精灵图
     bg_sprites = game.add.tileSprite(0, 0, 1500, 4800, "bg");
-    bg_sprites.smoothed = false;
+
     // 设置背景缩放以适应游戏窗口
-    bg_sprites.scale.set(
-      game.width / bg_sprites.width,
-      game.height / bg_sprites.height
-    );
+    bg_sprites.scale.set(game.width / bg_sprites.width, game.height / bg_sprites.height);
 
     // // 创建左上角计分板
     // const graphics = game.add.graphics(0, 0);
@@ -137,7 +129,7 @@ var runState = function (game) {
     // scoreIcon.anchor.set(0.5, 0.5);
     // scoreIcon.scale.set(0.2);
 
-    // // 创建前缀文字“得分: ”
+    // // 创建前缀文字"得分: "
     // var prefix = game.add.text(48, 18, "得分", textCommonConfig);
     // prefix.anchor.set(0.5, 0.5);
 
@@ -161,7 +153,7 @@ var runState = function (game) {
     // scoreImg.addChild(suffix);
 
     // 玩家
-    running = game.add.sprite(middleLane, game.height / 2, "running");
+    running = game.add.sprite(lanes[currentLaneIndex], game.height / 2, "running");
     running.smoothed = false;
     running.gameElementType = "player";
     // 为参与碰撞的物体启动物理系统
@@ -171,22 +163,26 @@ var runState = function (game) {
     running.scale.set(0.24);
     running.body.setSize(420, 540, 15, 0);
 
+    function moveToLane(targetLane) {
+      isMoving = true;
+      var targetX = lanes[targetLane];
+
+      var tween = game.add.tween(running).to({ x: targetX }, 200, Phaser.Easing.Power2, true);
+      tween.onComplete.add(function () {
+        currentLane = targetLane;
+        isMoving = false;
+      });
+    }
+
     game.input.onUp.add(function () {
-      var newPointer = game.input.activePointer;
-      if (newPointer.position.x > running.x && running.x < rightLane) {
-        // 向右移动一条跑道
-        if (running.x == leftLane) {
-          running.x = middleLane;
-        } else if (running.x == middleLane) {
-          running.x = rightLane;
-        }
-      } else if (newPointer.position.x < running.x && running.x > leftLane) {
-        // 向左移动一条跑道
-        if (running.x == rightLane) {
-          running.x = middleLane;
-        } else if (running.x == middleLane) {
-          running.x = leftLane;
-        }
+      if (game.paused) return;
+      if (isMoving) return;
+      var pointerX = game.input.activePointer.position.x;
+      var halfWidth = game.width / 2;
+      if (pointerX > halfWidth && currentLaneIndex < 2) {
+        moveToLane(++currentLaneIndex);
+      } else if (pointerX < halfWidth && currentLaneIndex > 0) {
+        moveToLane(--currentLaneIndex);
       }
     });
 
@@ -201,7 +197,7 @@ var runState = function (game) {
 
     // 每 3 秒缩短一次生成间隔（直到最小值）
     game.time.events.loop(
-      Phaser.Timer.SECOND * 3,
+      Phaser.Timer.SECOND * gapTime,
       function () {
         if (spawnInterval > minInterval) {
           // 生成障碍物时间短一点, 移动速度快一点, 背景速度快一点
@@ -209,11 +205,7 @@ var runState = function (game) {
           scrollSpeed += 15;
           // 先移除旧的计时器，再加一个新的更快的
           game.time.events.remove(obstacleTimer);
-          obstacleTimer = game.time.events.loop(
-            spawnInterval,
-            spawnObstacle,
-            this
-          );
+          obstacleTimer = game.time.events.loop(spawnInterval, spawnObstacle, this);
         }
       },
       this
@@ -221,14 +213,16 @@ var runState = function (game) {
 
     // 生成障碍物函数
     function spawnObstacle() {
-      // 随机选一个障碍物
-      var randomIndex = game.rnd.integerInRange(0, 2);
+      // 随机选一个障碍物, 0 炸弹, 1石头, 2粽子
+      var arr = [0, 0, 1, 1, 1, 2, 2];
+      var randomIndex = arr[Math.floor(Math.random() * arr.length)];
+      // var randomIndex = game.rnd.integerInRange(0, 2);
 
       // 创建 sprite 并使用随机帧
       var xRandom = [leftLane, middleLane, rightLane];
       var x = xRandom[Math.floor(Math.random() * xRandom.length)];
 
-      var obstacle = obstaclesGroup.create(x, -60, "obstacles", randomIndex); // 初始 y 为 -64（从上方出现）
+      var obstacle = obstaclesGroup.create(x, -64, "obstacles", randomIndex); // 初始 y 为 -64（从上方出现）
 
       // 防止障碍物遮挡计分板, 提高计分板的层级
       // game.world.bringToTop(scoreImg);
@@ -254,7 +248,6 @@ var runState = function (game) {
       }
 
       // 设置物理和速度
-      obstacle.body.velocity.y = scrollSpeed;
       obstacle.checkWorldBounds = true;
       obstacle.outOfBoundsKill = true;
       obstacle.scale.set(0.24);
@@ -284,29 +277,29 @@ var runState = function (game) {
   }
 
   function gameOver() {
-    isGameOver = true;
+    var _timer = setTimeout(() => {
+      isGameOver = true;
+      game.paused = true;
 
-    // 获取游戏次数
-    var times = getQueryVariable("times");
-    if (times > 0) {
-      document
-        .querySelector(".game-over-container-times")
-        .classList.remove("hidden");
-    } else {
-      document
-        .querySelector(".game-over-container-no-times")
-        .classList.remove("hidden");
-    }
+      // 获取游戏次数
+      var times = getQueryVariable("times");
+      if (times > 0) {
+        document.querySelector(".game-over-container-times").classList.remove("hidden");
+      } else {
+        document.querySelector(".game-over-container-no-times").classList.remove("hidden");
+      }
+
+      clearTimeout(_timer);
+    }, 300);
   }
 
   // 碰撞检测
   function onCollide(running, obstacle) {
-    // 碰撞不同的障碍物有不同的效果;
+    // 播放碰撞动画/效果
     switch (obstacle.gameElementType) {
       case 0:
         // 碰到炸弹
-        game.paused = true;
-        // 游戏结束
+        obstacle.kill();
         gameOver();
         break;
       case 1:
@@ -314,12 +307,10 @@ var runState = function (game) {
         obstacle.kill();
         score += obstacle.score;
         if (score < 0) {
-          game.paused = true;
-          // 游戏结束
           gameOver();
-          return;
+        } else {
+          changeScore("reduceScore");
         }
-        changeScore("reduceScore");
         break;
       case 2:
         // 碰到粽子
@@ -331,25 +322,26 @@ var runState = function (game) {
 
     // 游戏通关
     if (score >= successScore) {
-      game.paused = true;
-      isGameOver = true;
-
-      // 游戏通关
-      document
-        .querySelector(".game-success-container")
-        .classList.remove("hidden");
-      document.getElementById("scoreNum").innerText = score;
+      setTimeout(function () {
+        game.paused = true;
+        isGameOver = true;
+        document.querySelector(".game-success-container").classList.remove("hidden");
+        document.getElementById("scoreNum").innerText = score;
+      }, 300);
     }
 
     scoreDom.innerText = score;
-    // scoreValue.text = score;
   }
 
   this.update = function () {
-    // 平滑向下滚动（纵向）
-    // 每帧 tilePositionY 改变 scrollSpeed × delta
-    const delta = this.time.physicsElapsed;
-    bg_sprites.tilePosition.y += scrollSpeed * delta;
+    var delta = game.time.physicsElapsed; // 秒为单位
+    // update 里
+    bg_sprites.tilePosition.y += (scrollSpeed * delta) / bg_sprites.scale.y;
+
+    obstaclesGroup.forEachAlive(function (obstacle) {
+      obstacle.y += scrollSpeed * delta;
+    });
+
     game.physics.arcade.overlap(running, obstaclesGroup, onCollide, null, this);
   };
 
