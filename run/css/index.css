@@ -207,7 +207,7 @@
 #scoreNum {
   width: 75%;
   height: 7.33rem;
-  font-family: DOUYINSANSBOLD, DOUYINSANSBOLD;
+  font-family: din;
   font-weight: normal;
   font-size: 7.33rem;
   color: #222222;
@@ -226,7 +226,7 @@
 .continue-text {
   margin-top: 1.5rem;
   margin-left: 26.58rem;
-  width: 9.33rem;
+  width: max-content;
   height: 2.33rem;
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
@@ -235,4 +235,58 @@
   line-height: 28px;
   cursor: pointer;
   text-align: center;
+}
+
+
+
+/* loading */
+.game-loading{
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  background: url(../assets/loading-bg.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.progress-out {
+  width:45.83rem;
+  height: 3.33rem;
+  background: rgba(219, 247, 232, 0.94);
+  border-radius: 1.67rem;
+  border: 0.33rem solid #ffffff;
+  position: relative;
+}
+
+.progress-line {
+  /* width: 100%; */
+  /* width: 100%; */
+  width: 0;
+  height: 3.33rem;
+  background: linear-gradient( 90deg, #EFFF88 0%, #B7FF26 100%);
+  border-radius: 1.67rem;
+  transition: all 300ms;
+}
+
+.progress-icon {
+  width: 7.58rem;
+  height: 7.33rem;
+  background:url(../assets/zongzi.png) no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  left: -2rem;
+  top: -2rem;
+  transition: all 300ms;
+}
+
+
+
+.loading-text {
+  width: 100%;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 500;
+  font-size: 2.17rem;
+  color: #313B47;
+  line-height: 3.08rem;
+  text-align: center;
+  margin-top: 2.75rem;
 }

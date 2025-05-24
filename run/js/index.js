@@ -30,9 +30,7 @@ gameDesc.addEventListener("click", (e) => {
 // 跳转到游戏启动页
 function goGamePage(score) {
   wx.miniProgram.redirectTo({
-    url: `/packageD/pages/activity/25Dwj/game/index?from=h5&issuccess=${
-      score >= successScore ? 1 : 0
-    }&score=${score}`,
+    url: `/packageD/pages/activity/25Dwj/game/index?from=h5&issuccess=${score >= successScore ? 1 : 0}&score=${score}`,
     success: (res) => {
       console.log(res); // 页面跳转成功
     },
