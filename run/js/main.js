@@ -11,7 +11,14 @@ function getQueryVariable(variable) {
   return null;
 }
 
-var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.CANVAS, "gameCanvas");
+const dpr = window.devicePixelRatio || 1;
+
+var game = new Phaser.Game(
+  window.innerWidth,
+  window.innerHeight,
+  Phaser.CANVAS,
+  "gameCanvas"
+);
 
 var scoreDom = document.querySelector(".score-num");
 
@@ -28,9 +35,17 @@ var isGameOver = false;
 var loaderState = function (game) {
   this.preload = function () {
     // 船动画
-    game.load.atlasXML("running", "assets/boat/sprites.png", "assets/boat/sprites.xml");
+    game.load.atlasXML(
+      "running",
+      "assets/boat/sprites.png",
+      "assets/boat/sprites.xml"
+    );
     // 碰撞物资源加载
-    game.load.atlasXML("obstacles", "assets/obstacle/sprites.png", "assets/obstacle/sprites.xml");
+    game.load.atlasXML(
+      "obstacles",
+      "assets/obstacle/sprites.png",
+      "assets/obstacle/sprites.xml"
+    );
 
     // 分数图片, 加分
     game.load.image("addScore", "assets/addScore.png");
@@ -50,7 +65,9 @@ var loaderState = function (game) {
       if (progress == 100) {
         var startTimer = setTimeout(() => {
           document.querySelector(".game-loading").classList.add("hidden");
-          document.querySelector(".game-tips-container").classList.remove("hidden");
+          document
+            .querySelector(".game-tips-container")
+            .classList.remove("hidden");
           game.state.start("runState");
           clearTimeout(startTimer);
         }, 400);
@@ -80,12 +97,20 @@ var runState = function (game) {
   this.create = function () {
     game.paused = true;
 
+    const { width, height } = game.canvas;
+    game.canvas.width = width * dpr;
+    game.canvas.height = height * dpr;
+    game.canvas.style.width = width + "px";
+    game.canvas.style.height = height + "px";
+    const context = game.canvas.getContext("2d");
+    context.scale(dpr, dpr);
+
     Phaser.Canvas.setImageRenderingCrisp(game.canvas); // 仅限 Canvas 渲染器
     game.stage.smoothed = false;
 
     // 开启游戏物理引擎
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.scaleMode = Phaser.ScaleManager.FIT;
     game.scale.pageAlignVertically = true;
     game.scale.pageAlignHorizontally = true;
 
@@ -103,10 +128,17 @@ var runState = function (game) {
     bg_sprites = game.add.tileSprite(0, 0, 1500, 4800, "bg");
 
     // 设置背景缩放以适应游戏窗口
-    bg_sprites.scale.set(game.width / bg_sprites.width, game.height / bg_sprites.height);
+    bg_sprites.scale.set(
+      game.width / bg_sprites.width,
+      game.height / bg_sprites.height
+    );
 
     // 玩家
-    running = game.add.sprite(lanes[currentLaneIndex], game.height / 2, "running");
+    running = game.add.sprite(
+      lanes[currentLaneIndex],
+      game.height / 2,
+      "running"
+    );
     running.smoothed = false;
     running.gameElementType = "player";
     // 为参与碰撞的物体启动物理系统
@@ -120,7 +152,9 @@ var runState = function (game) {
       isMoving = true;
       var targetX = lanes[targetLane];
 
-      var tween = game.add.tween(running).to({ x: targetX }, 200, Phaser.Easing.Power2, true);
+      var tween = game.add
+        .tween(running)
+        .to({ x: targetX }, 200, Phaser.Easing.Power2, true);
       tween.onComplete.add(function () {
         currentLane = targetLane;
         isMoving = false;
@@ -158,7 +192,11 @@ var runState = function (game) {
           scrollSpeed += 20;
           // 先移除旧的计时器，再加一个新的更快的
           game.time.events.remove(obstacleTimer);
-          obstacleTimer = game.time.events.loop(spawnInterval, spawnObstacle, this);
+          obstacleTimer = game.time.events.loop(
+            spawnInterval,
+            spawnObstacle,
+            this
+          );
         }
       },
       this
@@ -240,9 +278,13 @@ var runState = function (game) {
       // 获取游戏次数
       var times = getQueryVariable("times");
       if (times > 0) {
-        document.querySelector(".game-over-container-times").classList.remove("hidden");
+        document
+          .querySelector(".game-over-container-times")
+          .classList.remove("hidden");
       } else {
-        document.querySelector(".game-over-container-no-times").classList.remove("hidden");
+        document
+          .querySelector(".game-over-container-no-times")
+          .classList.remove("hidden");
       }
 
       clearTimeout(_timer);
@@ -261,7 +303,9 @@ var runState = function (game) {
           setTimeout(function () {
             game.paused = true;
             isGameOver = true;
-            document.querySelector(".game-success-container").classList.remove("hidden");
+            document
+              .querySelector(".game-success-container")
+              .classList.remove("hidden");
             document.getElementById("scoreNum").innerText = score;
           }, 300);
           return;
