@@ -26,6 +26,7 @@ var GameState = function (game) {
   var _xrow = 0; // 当前行数
   var _score = 0; // 当前分数
   var _level = 0; // 当前关卡
+  var _startBall; // 起始球
 
   // 游戏对象
   var balls, shapes, line, tweenText;
@@ -59,15 +60,24 @@ var GameState = function (game) {
     // 设置缩放模式
     if (!game.device.desktop) {
       this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-    } else {
-      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     }
 
-    // 加载游戏资源
-    this.load.image("ground", "assets/imgs/ground.png");
-    this.load.spritesheet("ball", "assets/imgs/balls.png", 32, 32);
-    this.load.spritesheet("ball2", "assets/imgs/balls2.png", 48, 48);
-    this.load.spritesheet("button", "assets/imgs/buttons.png", 80, 40);
+    // 加载游戏背景
+    this.load.image("ground", "assets/imgs/bg.png");
+
+    // 加载分数面板背景
+    this.load.image("scorePanel", "assets/imgs/score-panel.png");
+
+    // 加载开始球的图像
+    this.load.image("ball", "assets/imgs/ball.png");
+
+    // 加载开始球的背景
+    this.load.image("startBallBg", "assets/imgs/start-ball-bg.png");
+
+    // 加载待发射状态的背景
+    this.load.image("pendingBg", "assets/imgs/pending-shot.png");
+
+    this.load.spritesheet("ball2", "assets/imgs/balls2.png", 100, 100);
     this.load.image("dot", "assets/imgs/dot.png");
 
     game.load.onFileComplete.add(function (progress) {
@@ -95,6 +105,7 @@ var GameState = function (game) {
     // 初始化P2物理系统
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.gravity.y = 1000; // 设置重力
+    game.physics.p2.debug = true;
 
     // 创建物理材质
     ballMaterial = game.physics.p2.createMaterial("ballMaterial");
@@ -116,45 +127,16 @@ var GameState = function (game) {
     game.physics.p2.setWorldMaterial(worldMaterial);
 
     // 创建背景
-    game.add.tileSprite(0, 0, game.width, 60, "ground").alpha = 0.5;
+    var background = game.add.tileSprite(
+      game.world.centerX,
+      170,
+      game.width,
+      game.height,
+      "ground"
+    );
+    background.anchor.setTo(0.5, 0.5);
 
-    // 创建中心球(发射点)
-    var home = game.add.sprite(game.world.centerX, 30, "ball", 3);
-    home.anchor.setTo(0.5);
-    home.scale.setTo(1.2);
-    home.update = function () {
-      this.alpha = !_over && !_going ? 1 : 0.5;
-    };
-
-    // 创建分数显示文本
-    var scoreText = game.add.text(10, 30, _score + "", {
-      fontSize: "20px",
-      fill: "#fff",
-      stroke: "#000", // 添加描边提高清晰度
-      strokeThickness: 2, // 描边粗细
-    });
-    scoreText.anchor.setTo(0, 0.5);
-    scoreText.update = function () {
-      this.text = _score;
-    };
-
-    // 创建剩余球数显示文本
-    var levelText = game.add.text(game.width - 10, 30, _ballNum + "", {
-      fontSize: "20px",
-      fill: "#fff",
-      stroke: "#000", // 添加描边提高清晰度
-      strokeThickness: 2, // 描边粗细
-    });
-    levelText.anchor.setTo(1, 0.5);
-    levelText.update = function () {
-      this.text = _ballNum;
-    };
-
-    // 初始化对象组
-    shapes = game.add.physicsGroup(Phaser.Physics.P2JS);
-    balls = game.add.physicsGroup(Phaser.Physics.P2JS);
-
-    // 创建地面
+    // 创建碰撞地面
     var ground = game.add.tileSprite(
       game.world.centerX,
       game.height - 30,
@@ -162,6 +144,7 @@ var GameState = function (game) {
       60,
       "ground"
     );
+    ground.anchor.setTo(0.5, 0.5);
     game.physics.p2.enable(ground);
     ground.body.static = true; // 设置为静态物体
 
@@ -176,25 +159,68 @@ var GameState = function (game) {
       }
     }, this);
 
+    // 创建分数面板背景
+    var scorePanel = game.add.tileSprite(20, 10, 712, 250, "scorePanel");
+    scorePanel.scale.set(1, 0.6);
+
+    // 创建发射球背景
+    var ballBg = game.add.image(game.world.centerX - 55, 70, "startBallBg");
+    ballBg.scale.set(1, 0.55);
+
+    // 创建中间发射球
+    _startBall = game.add.image(game.world.centerX - 30, 82, "ball");
+    _startBall.visible = true;
+    _startBall.scale.set(1, 0.6);
+
+    // 待发射状态的背景
+    var pendingBg = game.add.image(game.world.centerX - 38, 78, "pendingBg");
+    pendingBg.scale.set(1.25, 0.75);
+    // 默认隐藏状态
+    pendingBg.visible = false;
+
+    // 创建分数显示文本
+    var scoreText = game.add.text(150, 95, _score + "", {
+      fontSize: "24px",
+      fill: "#926039",
+      fontWeight: "normal",
+    });
+    scoreText.anchor.setTo(0.5);
+
+    scoreText.update = function () {
+      this.text = _score;
+    };
+
+    // 创建剩余球数显示文本
+    var levelText = game.add.text(game.world.width - 170, 95, _ballNum + "", {
+      fontSize: "24px",
+      fill: "#926039",
+      fontWeight: "normal",
+    });
+    levelText.anchor.setTo(0.5);
+
+    levelText.update = function () {
+      this.text = _ballNum;
+    };
+
+    // 初始化对象组
+    shapes = game.add.physicsGroup(Phaser.Physics.P2JS);
+    balls = game.add.physicsGroup(Phaser.Physics.P2JS);
+
     // 创建关卡升级动画文本
     tweenText = game.add.text(0, 0, "", {
       fontSize: "36px",
       fill: "#fff",
-      stroke: "#000", // 添加描边提高清晰度
-      strokeThickness: 4, // 描边粗细
     });
     tweenText.anchor.setTo(0.5);
     tweenText.alpha = 0;
-
     // 创建瞄准线
     line = game.add.tileSprite(
+      game.world.centerX + 10,
+      100,
       game.world.centerX,
-      30,
-      game.world.centerX,
-      16,
+      22,
       "dot"
     );
-    line.anchor.setTo(0, 0.5);
     line.visible = false;
 
     // 创建初始形状(3行)
@@ -209,6 +235,7 @@ var GameState = function (game) {
         _pointID = p.id;
         line.rotation = Math.atan2(p.y - 20, p.x - 225);
         line.visible = true;
+        pendingBg.visible = true;
       }
     }, this);
 
@@ -219,6 +246,8 @@ var GameState = function (game) {
         _pointID = -1;
         _going = true;
         line.visible = false;
+        pendingBg.visible = false;
+        _startBall.visible = false;
 
         // 计算发射速度向量
         var vPoint = this._velocityFromRotation(line.rotation, 800);
@@ -233,9 +262,9 @@ var GameState = function (game) {
                 var ball = balls.getChildAt(id);
                 ball.reset(game.world.centerX, 30);
               } else {
-                var ball = balls.create(game.world.centerX, 30, "ball", 0);
+                var ball = balls.create(game.world.centerX, 90, "ball");
                 ball.anchor.set(0.5);
-                ball.scale.set(0.7);
+                ball.scale.set(0.65, 0.45);
                 ball.body.setCircle(12);
                 ball.body.setMaterial(ballMaterial);
 
@@ -289,7 +318,7 @@ var GameState = function (game) {
     shapes.forEachAlive(function (shape) {
       var topY = shape.body.y - 90;
       // 检查游戏是否结束(形状到达顶部)
-      if (topY < 60 && !_over) {
+      if (topY < 260 && !_over) {
         _over = true;
         this._overMenu(); // 显示结束菜单
       }
@@ -305,6 +334,8 @@ var GameState = function (game) {
    * @param {number} i - 行号(相对于底部)
    */
   this._createShapes = function (i) {
+    _startBall.visible = true;
+
     // 每10行升一级
     if (_xrow == 0) {
       this._levelUp();
@@ -321,12 +352,13 @@ var GameState = function (game) {
       // 获取或创建形状对象
       var shape = shapes.getFirstDead(
         true,
-        65 + j * 90 + 45 * (_xrow % 2), // X位置(交错排列)
-        300 + i * 90, // Y位置
+        65 + j * 140 + 45 * (_xrow % 2), // X位置(交错排列)
+        300 + i * 90 - 20, // Y位置
         "ball2",
         shapeID
       );
       shape.anchor.set(0.5);
+      shape.scale.set(0.8);
 
       // 根据形状类型设置碰撞体
       if (shapeID == 1) {
@@ -338,7 +370,7 @@ var GameState = function (game) {
           [23, 0, 0, 39, 1, 40, 46, 40, 47, 39, 24, 0]
         );
       } else {
-        shape.body.setCircle(22); // 圆形
+        shape.body.setCircle(40); // 圆形
       }
 
       shape.body.static = true; // 静态物体
@@ -348,11 +380,10 @@ var GameState = function (game) {
       // 为形状添加生命值文本
       if (!shape.txt) {
         shape.txt = shape.addChild(
-          game.make.text(0, 0, shape.health + "", {
-            fontSize: "20px",
-            fill: "#f00",
-            stroke: "#000", // 添加描边提高清晰度
-            strokeThickness: 1, // 描边粗细
+          game.make.text(0, 2, shape.health + "", {
+            fontSize: "38px",
+            fill: "#FFFFFF",
+            fontWeight: "normal",
           })
         );
         shape.txt.anchor.set(0.5);
@@ -426,9 +457,17 @@ var GameState = function (game) {
         .classList.remove("hidden");
     }
   };
+
+  this.render = function () {
+    balls.forEachAlive(function (b) {
+      game.debug.body(b);
+    });
+    shapes.forEachAlive(function (s) {
+      game.debug.body(s);
+    });
+  };
 };
 
-// 创建游戏实例(500x860分辨率，使用Canvas渲染)
-var game = new Phaser.Game(500, 860, Phaser.CANVAS, "", null, false, true);
+var game = new Phaser.Game(750, 1461, Phaser.CANVAS, "gameCanvas", null, true);
 // 添加游戏状态
 game.state.add("main", GameState, true);

@@ -28,6 +28,7 @@
         display: block;
         margin: 0 auto;
         image-rendering: crisp-edges;
+        background: linear-gradient(to bottom, #1e3c72, #2a5298); /* 渐变色 */
       }
     </style>
   </head>
@@ -42,11 +43,11 @@
     </div>
 
     <!-- 游戏开始的提示 -->
-<!--    <div class="mask game-tips-container hidden">-->
-<!--      <div class="game-tips">-->
-<!--        <button class="game-tips-btn"></button>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="mask game-tips-container hidden">-->
+    <!--      <div class="game-tips">-->
+    <!--        <button class="game-tips-btn"></button>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <!-- 游戏说明 -->
     <div class="mask game-desc-container hidden">
@@ -86,8 +87,8 @@
     </div>
 
     <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-    <script src="./js/phaser.js"></script>
+    <script src="./js/phaser.min.js"></script>
     <script src="./js/main.js"></script>
-  <script src="./js/index.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>

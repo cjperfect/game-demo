@@ -100,13 +100,6 @@ lotteryBtn.addEventListener("click", () => {
 function navBackListener() {
   window.history.pushState(null, null, window.location.href);
   window.addEventListener("popstate", () => {
-    // 路由后退, 所有已有的弹框都要关闭, 包括游戏都要暂停
-    // [
-    //   document.querySelector(".game-over-container-times"),
-    //   document.querySelector(".game-over-container-no-times"),
-    //   document.querySelector(".game-success-container"),
-    // ].forEach((dom) => dom.classList.add("hidden"));
-
     // 用户点击后退, 导致游戏中断
     game.paused = true;
     const dom = document.querySelector(".pause-container");
