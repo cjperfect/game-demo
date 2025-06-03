@@ -400,20 +400,22 @@ var GameState = function (game) {
         shapeID
       );
       // shape.anchor.set(0.5);
-
+      var x = 0,
+        y = 0;
       var bodyMap = {
         0: () => {
           shape.body.setCircle(50); // 圆形
 
           // 添加圆形可视化
-          const graphics0 = game.add.graphics(0, 0);
-          graphics0.lineStyle(2, 0x0000ff, 1); // 蓝色线条
-          graphics0.beginFill(0x0000ff, 0.2); // 半透明蓝色填充
-          graphics0.drawCircle(0, 0, 50);
-          graphics0.endFill();
-          shape.addChild(graphics0);
+          // const graphics0 = game.add.graphics(0, 0);
+          // graphics0.lineStyle(2, 0x0000ff, 1); // 蓝色线条
+          // graphics0.beginFill(0x0000ff, 0.2); // 半透明蓝色填充
+          // graphics0.drawCircle(0, 0, 50);
+          // graphics0.endFill();
+          // shape.addChild(graphics0);
         },
         1: () => {
+          y = 16;
           shape.body.addPolygon(
             // 多边形
             null,
@@ -421,14 +423,14 @@ var GameState = function (game) {
           );
 
           // 添加多边形可视化
-          const graphics1 = game.add.graphics(0, 0);
-          graphics1.lineStyle(2, 0xff0000, 1);
-          graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
-          graphics1.moveTo(0, -42);
-          graphics1.lineTo(50, 34);
-          graphics1.lineTo(-50, 34);
-          graphics1.endFill();
-          shape.addChild(graphics1);
+          // const graphics1 = game.add.graphics(0, 0);
+          // graphics1.lineStyle(2, 0xff0000, 1);
+          // graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
+          // graphics1.moveTo(0, -42);
+          // graphics1.lineTo(50, 34);
+          // graphics1.lineTo(-50, 34);
+          // graphics1.endFill();
+          // shape.addChild(graphics1);
         },
         2: () => {
           shape.body.addPolygon(
@@ -438,15 +440,15 @@ var GameState = function (game) {
           );
 
           // 添加多边形可视化
-          const graphics1 = game.add.graphics(0, 0);
-          graphics1.lineStyle(2, 0xff0000, 1);
-          graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
-          graphics1.moveTo(-44, -44);
-          graphics1.lineTo(44, -44);
-          graphics1.lineTo(44, 44);
-          graphics1.lineTo(-44, 44);
-          graphics1.endFill();
-          shape.addChild(graphics1);
+          // const graphics1 = game.add.graphics(0, 0);
+          // graphics1.lineStyle(2, 0xff0000, 1);
+          // graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
+          // graphics1.moveTo(-44, -44);
+          // graphics1.lineTo(44, -44);
+          // graphics1.lineTo(44, 44);
+          // graphics1.lineTo(-44, 44);
+          // graphics1.endFill();
+          // shape.addChild(graphics1);
         },
         3: () => {
           shape.body.addPolygon(
@@ -456,15 +458,15 @@ var GameState = function (game) {
           );
 
           // 添加多边形可视化
-          const graphics1 = game.add.graphics(0, 0);
-          graphics1.lineStyle(2, 0xff0000, 1);
-          graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
-          graphics1.moveTo(-20, -60);
-          graphics1.lineTo(60, -20);
-          graphics1.lineTo(20, 60);
-          graphics1.lineTo(-60, 20);
-          graphics1.endFill();
-          shape.addChild(graphics1);
+          // const graphics1 = game.add.graphics(0, 0);
+          // graphics1.lineStyle(2, 0xff0000, 1);
+          // graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
+          // graphics1.moveTo(-20, -60);
+          // graphics1.lineTo(60, -20);
+          // graphics1.lineTo(20, 60);
+          // graphics1.lineTo(-60, 20);
+          // graphics1.endFill();
+          // shape.addChild(graphics1);
         },
         4: () => {
           shape.body.addPolygon(
@@ -474,15 +476,15 @@ var GameState = function (game) {
           );
 
           // 添加多边形可视化
-          const graphics1 = game.add.graphics(0, 0);
-          graphics1.lineStyle(2, 0xff0000, 1);
-          graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
-          graphics1.moveTo(10, -60);
-          graphics1.lineTo(60, 10);
-          graphics1.lineTo(-10, 60);
-          graphics1.lineTo(-60, -10);
-          graphics1.endFill();
-          shape.addChild(graphics1);
+          // const graphics1 = game.add.graphics(0, 0);
+          // graphics1.lineStyle(2, 0xff0000, 1);
+          // graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
+          // graphics1.moveTo(10, -60);
+          // graphics1.lineTo(60, 10);
+          // graphics1.lineTo(-10, 60);
+          // graphics1.lineTo(-60, -10);
+          // graphics1.endFill();
+          // shape.addChild(graphics1);
         },
         5: () => {
           shape.body.addPolygon(
@@ -492,16 +494,18 @@ var GameState = function (game) {
           );
 
           // 添加多边形可视化
-          const graphics1 = game.add.graphics(0, 0);
-          graphics1.lineStyle(2, 0xff0000, 1);
-          graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
-          graphics1.moveTo(-50, -25);
-          graphics1.lineTo(35, -45);
-          graphics1.lineTo(15, 40);
-          graphics1.endFill();
-          shape.addChild(graphics1);
+          // const graphics1 = game.add.graphics(0, 0);
+          // graphics1.lineStyle(2, 0xff0000, 1);
+          // graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
+          // graphics1.moveTo(-50, -25);
+          // graphics1.lineTo(35, -45);
+          // graphics1.lineTo(15, 40);
+          // graphics1.endFill();
+          // shape.addChild(graphics1);
         },
         6: () => {
+          x = -6;
+          y = 4;
           shape.body.addPolygon(
             // 多边形
             null,
@@ -509,14 +513,14 @@ var GameState = function (game) {
           );
 
           // 添加多边形可视化
-          const graphics1 = game.add.graphics(0, 0);
-          graphics1.lineStyle(2, 0xff0000, 1);
-          graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
-          graphics1.moveTo(-35, -45);
-          graphics1.lineTo(45, 5);
-          graphics1.lineTo(-35, 45);
-          graphics1.endFill();
-          shape.addChild(graphics1);
+          // const graphics1 = game.add.graphics(0, 0);
+          // graphics1.lineStyle(2, 0xff0000, 1);
+          // graphics1.beginFill(0xff0000, 0.2); // 半透明红色填充
+          // graphics1.moveTo(-35, -45);
+          // graphics1.lineTo(45, 5);
+          // graphics1.lineTo(-35, 45);
+          // graphics1.endFill();
+          // shape.addChild(graphics1);
         },
       };
       bodyMap[shapeID]();
@@ -528,7 +532,7 @@ var GameState = function (game) {
       // 为形状添加生命值文本
       if (!shape.txt) {
         shape.txt = shape.addChild(
-          game.make.text(0, 2, shape.health + "", {
+          game.make.text(x, y, shape.health + "", {
             fontSize: "38px",
             fill: "#FFFFFF",
             fontWeight: "normal",
