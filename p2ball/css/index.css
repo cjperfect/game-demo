@@ -20,6 +20,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .toTop {
@@ -67,36 +69,6 @@
   font-size: 2.5rem;
 }
 
-/* ==============================游戏提示========================== */
-
-.game-tips-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.game-tips {
-  width: 51.83rem;
-  height: 64.08rem;
-  background: url(../assets/imgs/game-tips.png) no-repeat;
-  background-size: 100% 100%;
-  position: relative;
-}
-
-.game-tips-btn {
-  width: 43.83rem;
-  height: 9.33rem;
-  background: url(../assets/imgs/game-tips-btn.png) no-repeat;
-  background-size: 100% 100%;
-  position: absolute;
-  bottom: 4rem;
-  left: 4rem;
-  border: none;
-  outline: none;
-}
-
 /* ======================游戏说明============================== */
 .game-desc-container {
   width: 100%;
@@ -104,15 +76,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 20rem;
+  justify-content: space-between;
+  backdrop-filter: none;
 }
 
 .game-desc {
   width: 45rem;
-  height: 25.83rem;
+  height: 78.17rem;
   background: url(../assets/imgs/game-desc.png) no-repeat;
   background-size: 100% 100%;
+  margin: 4.5rem 0 0 3rem;
+  position: relative;
 }
 
 .game-desc-container > p {
@@ -121,7 +95,7 @@
   font-size: 2.17rem;
   color: #ffffff;
   line-height: 3.08rem;
-  margin-bottom: 17rem;
+  margin-bottom: 20rem;
 }
 
 /* ======================暂停游戏============================== */
@@ -207,18 +181,19 @@
 #scoreNum {
   width: 75%;
   height: 7.33rem;
-  font-family: din;
+  font-family: DINAlternate, DINAlternate;
   font-weight: normal;
   font-size: 7.33rem;
   color: #222222;
   line-height: 7.33rem;
-  margin-top: 48.42rem;
+  margin-top: 37.58rem;
   text-align: center;
   margin-left: 8rem;
 }
 
 .lottery-btn {
   margin-left: 11.58rem;
+  margin-top: -1rem;
   background: url(../assets/imgs/lottery-btn.png) no-repeat;
   background-size: 100% 100%;
 }
