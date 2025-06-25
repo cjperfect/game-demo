@@ -88,40 +88,6 @@
   left: -0.2rem;
 }
 
-/* ==============================分数面板========================== */
-
-.score-panel {
-  width: 22.67rem;
-  height: 5rem;
-  background: #ffffff;
-  border-radius: 2.5rem;
-  font-family: PingFangSC, PingFang SC;
-  font-weight: 400;
-  font-size: 2rem;
-  color: #596061;
-  line-height: 2.75rem;
-  position: fixed;
-  top: 3.83rem;
-  left: 2.67rem;
-  display: flex;
-  align-items: center;
-}
-
-.score-panel i {
-  display: inline-block;
-  width: 3.33rem;
-  height: 3.33rem;
-  background-image: url("../assets/icon.png");
-  background-size: 100% 100%;
-  margin-left: 2.67rem;
-  margin-right: 1.25rem;
-}
-
-.score-panel b {
-  margin: 0 2.5rem;
-  font-size: 2.5rem;
-}
-
 /* ======================游戏说明============================== */
 .game-desc-container {
   width: 100%;
@@ -131,14 +97,16 @@
   align-items: center;
   justify-content: space-between;
   backdrop-filter: none;
+  background: url(../assets/desc-placeholder.png) no-repeat;
+  background-size: 100% 100%;
 }
 
 .game-desc {
   width: 45rem;
-  height: 78.17rem;
+  height: 30rem;
   background: url(../assets/game-desc.png) no-repeat;
   background-size: 100% 100%;
-  margin: 4.5rem 0 0 3rem;
+  margin-top: 58rem;
   position: relative;
 }
 
@@ -226,8 +194,18 @@
 /* ======================游戏通关============================== */
 .success {
   width: 62.5rem;
-  height: 99rem;
-  background: url(../assets/game-success.png) no-repeat;
+  height: 109.83rem;
+  background: url(../assets/game-success-1.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.success-2 {
+  background: url(../assets/game-success-2.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.success-3 {
+  background: url(../assets/game-success-3.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -239,7 +217,7 @@
   font-size: 7.33rem;
   color: #222222;
   line-height: 7.33rem;
-  margin-top: 37.58rem;
+  margin-top: 42.58rem;
   text-align: center;
   margin-left: 8rem;
 }
@@ -270,7 +248,7 @@
   width: 100vw;
   height: 100vh;
   flex-direction: column;
-  background: url(../assets/bg.png) no-repeat;
+  background: url(../assets/loading-bg.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -292,13 +270,13 @@
 }
 
 .progress-icon {
-  width: 7.58rem;
-  height: 7.33rem;
-  background: url(../assets/bird.png) no-repeat;
+  width: 8rem;
+  height: 8rem;
+  background: url(../assets/process-icon.png) no-repeat;
   background-size: 100% 100%;
   position: absolute;
   left: -2rem;
-  top: -2rem;
+  top: -3rem;
   transition: all 300ms;
 }
 

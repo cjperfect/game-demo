@@ -15,21 +15,25 @@ var scoreDom = document.querySelector(".score-num");
 var levelDom = document.querySelector(".level-num");
 
 // 成功分数线
-var successScore = 5;
-// 游戏是否结束
-var isGameOver = false;
+var successScore = 1;
+
+// 多少分为1关
+var nextLevelScore = 2;
+
 // 当前分数
 var score = 0;
+
 // 当前关卡
 var level = 1;
+
+// 游戏是否结束
+var isGameOver = false;
+
 // 生成管道时间
 var interval = 1400;
 
 // 升级关卡动画元素
 var boxGroup;
-
-// 多少分为1关
-var nextLevelScore = 5;
 
 // 创建 Phaser 游戏实例，设置画布大小和渲染方式
 var game = new Phaser.Game(750, 1609, Phaser.CANVAS, "gameCanvas");
@@ -92,7 +96,7 @@ var main = function () {
       "ground"
     );
     // 添加小鸟角色
-    this.bird = game.add.sprite(100, game.world.centerY - 200, "bird");
+    this.bird = game.add.sprite(350, game.world.centerY - 200, "bird");
     this.bird.anchor.setTo(0.5, 0.5);
     // 启用物理系统
     game.physics.enable(this.bird, Phaser.Physics.ARCADE);
@@ -319,6 +323,15 @@ var main = function () {
       document
         .querySelector(".game-success-container")
         .classList.remove("hidden");
+
+      var successDom = document.querySelector(".success");
+      var className = "success-1";
+      // 有两次抽奖机会
+      if (score >= 125) className = "success-2";
+      // 有三次抽奖机会
+      if (score >= 225) className = "success-3";
+      successDom.classList.add(className);
+
       document.getElementById("scoreNum").innerText = score;
       return;
     } else {
