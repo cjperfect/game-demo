@@ -48,13 +48,13 @@ function goRafflePage(score) {
 // 游戏失败, 有次数时候的开始游戏按钮
 const startBtn = document.querySelector(".start-btn");
 startBtn.addEventListener("click", () => {
-  goGamePage(_score);
+  goGamePage(score);
 });
 
 // 游戏通关的继续游戏
 const continueText = document.querySelector(".continue-text");
 continueText.addEventListener("click", () => {
-  goGamePage(_score);
+  goGamePage(score);
 });
 
 // 中断的继续游戏按钮
@@ -73,19 +73,19 @@ continueBtn.addEventListener("click", () => {
 // 中断的忍痛离开按钮
 const leaveBtn = document.querySelector(".leave-btn");
 leaveBtn.addEventListener("click", () => {
-  goGamePage(_score, true);
+  goGamePage(score, true);
 });
 
 // 邀请好友
 const inviteBtn = document.querySelector(".invite-btn");
 inviteBtn.addEventListener("click", () => {
-  goGamePage(_score);
+  goGamePage(score);
 });
 
 // 去抽奖
 const lotteryBtn = document.querySelector(".lottery-btn");
 lotteryBtn.addEventListener("click", () => {
-  goRafflePage(_score);
+  goRafflePage(score);
 });
 
 function navBackListener() {

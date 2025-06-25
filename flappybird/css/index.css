@@ -36,6 +36,59 @@
 }
 
 /* ==============================分数面板========================== */
+.score-container {
+  width: 29.17rem;
+  height: 5.5rem;
+  background: #ffffff;
+  border-radius: 2.5rem;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 2rem;
+  color: #596061;
+  line-height: 2.75rem;
+  position: fixed;
+  top: 3.83rem;
+  left: 2.67rem;
+  display: flex;
+  align-items: center;
+}
+
+.score-container > span {
+  flex: 1;
+}
+
+.score-container i {
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  background-image: url("../assets/icon.png");
+  background-size: 100% 100%;
+  margin-left: 2rem;
+  margin-right: 1.25rem;
+}
+
+.score-container b {
+  margin-left: 1.3rem;
+  font-size: 2rem;
+  font-family: DINAlternate, DINAlternate;
+}
+
+.score-container .level {
+  padding-left: 2rem;
+  position: relative;
+}
+
+.score-container .level::before {
+  content: "";
+  width: 1px;
+  height: 2.17rem;
+  background-color: #b9bdc4;
+  position: absolute;
+  top: 0.4rem;
+  left: -0.2rem;
+}
+
+/* ==============================分数面板========================== */
 
 .score-panel {
   width: 22.67rem;
@@ -241,7 +294,7 @@
 .progress-icon {
   width: 7.58rem;
   height: 7.33rem;
-  background: url(../assets/zongzi.png) no-repeat;
+  background: url(../assets/bird.png) no-repeat;
   background-size: 100% 100%;
   position: absolute;
   left: -2rem;
