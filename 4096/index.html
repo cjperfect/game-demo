@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <title>智勇穿越挑战</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <link href="./css/index.css" rel="stylesheet" />
+
+  <style>
+    html,
+    body {
+      font-size: 1.6vw !important;
+    }
+    /* 基础样式设置 */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* 画布渲染优化 */
+    canvas {
+      display: block;
+      margin: 0 auto;
+      image-rendering: crisp-edges;
+      background: linear-gradient(to bottom, #1e3c72, #2a5298); /* 渐变色 */
+    }
+  </style>
+</head>
+<body>
+  <div id="gameCanvas">
+    <!-- 由于分数面板在canvas中表现模糊, 决定用dom实现 -->
+    <div class="score-container">
+      <i class="icon"></i>
+      <span>得分<b class="score-num">0</b></span>
+      <span class="level">关卡<b class="level-num">1</b></span>
+    </div>
+  </div>
+
+  <div class="mask game-loading">
+    <div class="progress-out">
+      <div class="progress-line"></div>
+      <div class="progress-icon"></div>
+      <div class="loading-text">活动加载中...</div>
+    </div>
+  </div>
+
+  <!-- 游戏说明 -->
+  <div class="mask game-desc-container hidden">
+    <div class="game-desc"></div>
+    <p>点击任意处继续</p>
+  </div>
+
+  <!-- 暂停 -->
+  <div class="mask pause-container hidden">
+    <div class="pause-desc">
+      <button class="common-btn continue-btn"></button>
+      <p class="leave-btn">忍痛离开</p>
+    </div>
+  </div>
+
+  <!--  游戏结束---有次数  -->
+  <div class="mask game-over-container-times hidden">
+    <div class="have-times">
+      <button class="common-btn start-btn"></button>
+    </div>
+  </div>
+
+  <!--  游戏结束---无次数  -->
+  <div class="mask game-over-container-no-times hidden">
+    <div class="no-times">
+      <button class="common-btn invite-btn"></button>
+    </div>
+  </div>
+
+  <!--  游戏通关  -->
+  <div class="mask game-success-container hidden">
+    <div class="success">
+      <h1 id="scoreNum">99999</h1>
+      <button class="common-btn lottery-btn"></button>
+      <p class="continue-text">继续游戏</p>
+    </div>
+  </div>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+  <script src="./js/phaser.min.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/index.js"></script>
+</body>

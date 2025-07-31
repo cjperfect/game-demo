@@ -119,7 +119,7 @@ var GameState = function (game) {
   this.create = function () {
     // 初始化P2物理系统
     game.physics.startSystem(Phaser.Physics.P2JS);
-    game.physics.p2.gravity.y = 1600; // 设置重力
+    game.physics.p2.gravity.y = 1400; // 设置重力
 
     // 创建物理材质
     ballMaterial = game.physics.p2.createMaterial("ballMaterial");
