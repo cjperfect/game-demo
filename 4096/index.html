@@ -1,11 +1,9 @@
 <!DOCTYPE html>
+
 <head>
   <meta charset="UTF-8" />
-  <title>智勇穿越挑战</title>
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+  <title>4096</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link href="./css/index.css" rel="stylesheet" />
 
   <style>
@@ -13,6 +11,7 @@
     body {
       font-size: 1.6vw !important;
     }
+
     /* 基础样式设置 */
     body {
       margin: 0;
@@ -27,21 +26,22 @@
       display: block;
       margin: 0 auto;
       image-rendering: crisp-edges;
-      background: linear-gradient(to bottom, #1e3c72, #2a5298); /* 渐变色 */
+      background: linear-gradient(to bottom, #1e3c72, #2a5298);
+      /* 渐变色 */
     }
   </style>
 </head>
+
 <body>
   <div id="gameCanvas">
     <!-- 由于分数面板在canvas中表现模糊, 决定用dom实现 -->
     <div class="score-container">
-      <i class="icon"></i>
-      <span>得分<b class="score-num">0</b></span>
-      <span class="level">关卡<b class="level-num">1</b></span>
+      <b class="score-num">0</b>
+      <b class="level-num">0</b>
     </div>
   </div>
 
-  <div class="mask game-loading">
+  <div class="mask game-loading hidden">
     <div class="progress-out">
       <div class="progress-line"></div>
       <div class="progress-icon"></div>
@@ -86,7 +86,7 @@
     </div>
   </div>
   <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-  <script src="./js/phaser.min.js"></script>
+  <script src="./js/phaser3.min.js"></script>
   <script src="./js/main.js"></script>
   <script src="./js/index.js"></script>
 </body>
