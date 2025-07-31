@@ -2,7 +2,7 @@ var game;
 var gameOptions = {
   tileSize: 166,
   tweenSpeed: 50,
-  tileSpacing: 14,
+  tileSpacing: 10,
   localStorageName: "top4096score", //4096 增加储存分数变量
 };
 var ROW = 0;
@@ -57,8 +57,11 @@ var playGame = new Phaser.Class({
       localStorage.getItem(gameOptions.localStorageName) == null
         ? 0
         : localStorage.getItem(gameOptions.localStorageName);
+    // 目前最高分数
+    document.querySelector(".best-score-num").innerHTML = this.bestScore;
+    // 归零当前分数
+    document.querySelector(".score-num").innerHTML = 0;
 
-    // 创建背景
     // 添加全屏背景图片
     this.bgImage = this.add.image(game.config.width / 2, game.config.height / 2, "bg");
 
@@ -84,7 +87,7 @@ var playGame = new Phaser.Class({
       }
     }
     var restartButton = this.add.sprite(
-      this.tileDestination(0, COL) + 280,
+      this.tileDestination(0, COL) + 262,
       this.tileDestination(5, ROW) - 160,
       "restart"
     );
@@ -265,8 +268,10 @@ var playGame = new Phaser.Class({
       this.canMove = true;
     } else {
       this.score += moveScore;
+      document.querySelector(".score-num").innerHTML = this.score;
       if (this.score > this.bestScore) {
         this.bestScore = this.score;
+        document.querySelector(".best-score-num").innerHTML = this.bestScore;
         localStorage.setItem(gameOptions.localStorageName, this.bestScore);
       }
     }
@@ -339,7 +344,7 @@ var playGame = new Phaser.Class({
       pos * (gameOptions.tileSize + gameOptions.tileSpacing) +
       gameOptions.tileSize / 2 +
       gameOptions.tileSpacing +
-      offset 
+      offset
     );
   },
 });
