@@ -1,5 +1,6 @@
 var offsetY = 115;
 var game;
+var score;
 var gameOptions = {
   tileSize: 166,
   tweenSpeed: 50,
@@ -14,7 +15,6 @@ window.onload = function () {
     type: Phaser.CANVAS,
     width: 750,
     height: 1660,
-    backgroundColor: 0xecf0f1,
     scene: [preloadAssets, playGame],
   };
   game = new Phaser.Game(gameConfig);
@@ -35,10 +35,25 @@ var preloadAssets = new Phaser.Class({
       frameWidth: gameOptions.tileSize,
       frameHeight: gameOptions.tileSize,
     });
+
+    this.load.on("progress", function (progress) {
+      // 加载界面
+      var loadingLine = document.querySelector(".progress-line");
+      var loadingIcon = document.querySelector(".progress-icon");
+      loadingLine.style.width = progress * 100 + "%";
+      loadingIcon.style.left = progress * 100 - 10 + "%";
+
+      if (progress == 1) {
+        var startTimer = setTimeout(() => {
+          document.querySelector(".game-loading").classList.add("hidden");
+          document.querySelector(".game-desc-container").classList.remove("hidden");
+          game.scene.start("PlayGame");
+          clearTimeout(startTimer);
+        }, 400);
+      }
+    });
   },
-  create: function () {
-    this.scene.start("PlayGame");
-  },
+  create: function () {},
 });
 
 var playGame = new Phaser.Class({
@@ -266,6 +281,7 @@ var playGame = new Phaser.Class({
       this.canMove = true;
     } else {
       this.score += moveScore;
+      score = this.score;
       document.querySelector(".score-num").innerHTML = this.score;
       if (this.score > this.bestScore) {
         this.bestScore = this.score;

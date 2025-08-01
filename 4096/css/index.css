@@ -68,17 +68,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: none;
-  background: url(../assets/desc-placeholder.png) no-repeat;
-  background-size: 100% 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
 }
 
 .game-desc {
-  width: 45rem;
-  height: 30rem;
+  width: 62.5rem;
+  height: 42.17rem;
   background: url(../assets/game-desc.png) no-repeat;
   background-size: 100% 100%;
-  margin-top: 58rem;
+  margin-top: 19.33rem;
   position: relative;
 }
 
@@ -88,20 +87,20 @@
   font-size: 2.17rem;
   color: #ffffff;
   line-height: 3.08rem;
-  margin-bottom: 20rem;
+  margin-bottom: 30rem;
 }
 
 /* ======================暂停游戏============================== */
 .pause-desc {
   width: 62.5rem;
-  height: 63.33rem;
+  height: 49.58rem;
   background: url(../assets/game-pause.png) no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
 }
 
 .continue-btn {
-  margin-top: 33.66rem;
+  margin-top: 30.58rem;
   margin-left: 11.58rem;
   background: url(../assets/continue-btn.png) no-repeat;
   background-size: 100% 100%;
@@ -124,7 +123,7 @@
 /* ======================游戏失败---有次数============================== */
 .have-times {
   width: 62.5rem;
-  height: 63.33rem;
+  height: 58.17rem;
   left: 0;
   right: 0;
   bottom: 0;
@@ -135,7 +134,7 @@
 }
 
 .start-btn {
-  margin-top: 38.33rem;
+  margin-top: 43.83rem;
   margin-left: 11.58rem;
   background: url(../assets/start-btn.png) no-repeat;
   background-size: 100% 100%;
@@ -157,7 +156,7 @@
 }
 
 .invite-btn {
-  margin-top: 43.17rem;
+  margin-top: 48.58rem;
   margin-left: 11.58rem;
   background: url(../assets/invite-btn.png) no-repeat;
   background-size: 100% 100%;
@@ -167,23 +166,14 @@
 .success {
   width: 62.5rem;
   height: 109.83rem;
-  background: url(../assets/game-success-1.png) no-repeat;
+  background: url(../assets/game-success.png) no-repeat;
   background-size: 100% 100%;
 }
 
-.success-2 {
-  background: url(../assets/game-success-2.png) no-repeat;
-  background-size: 100% 100%;
-}
-
-.success-3 {
-  background: url(../assets/game-success-3.png) no-repeat;
-  background-size: 100% 100%;
-}
 
 #scoreNum {
   width: 75%;
-  height: 7.33rem;
+  height: 7.33rem; 
   font-family: DINAlternate, DINAlternate;
   font-weight: normal;
   font-size: 7.33rem;
