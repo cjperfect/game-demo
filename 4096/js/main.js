@@ -1,3 +1,4 @@
+var offsetY = 115;
 var game;
 var gameOptions = {
   tileSize: 166,
@@ -11,15 +12,12 @@ var COL = 1; //4096 分别用于定位行和列的常量
 window.onload = function () {
   var gameConfig = {
     type: Phaser.CANVAS,
-    width: gameOptions.tileSize * 4 + gameOptions.tileSpacing * 5,
-    height: ((gameOptions.tileSize * 4 + gameOptions.tileSpacing * 5) * 19.5) / 9,
+    width: 750,
+    height: 1660,
     backgroundColor: 0xecf0f1,
     scene: [preloadAssets, playGame],
   };
   game = new Phaser.Game(gameConfig);
-  window.focus(); //获得窗口焦点
-  resize(); //调整窗口
-  window.addEventListener("resize", resize, false);
 };
 
 var preloadAssets = new Phaser.Class({
@@ -69,13 +67,13 @@ var playGame = new Phaser.Class({
     this.bgImage.displayWidth = game.config.width;
     this.bgImage.displayHeight = game.config.height;
 
-    this.add.image(game.config.width / 2, game.config.height / 2, "gridBg");
+    this.add.image(game.config.width / 2, game.config.height / 2 - offsetY, "gridBg");
 
     for (var i = 0; i < 4; i++) {
       this.fieldArray[i] = [];
       for (var j = 0; j < 4; j++) {
-        var spot = this.add.sprite(this.tileDestination(j, COL), this.tileDestination(i, ROW), "spot");
-        var tile = this.add.sprite(this.tileDestination(j, COL), this.tileDestination(i, ROW), "tiles");
+        var spot = this.add.sprite(this.tileDestination(j, COL), this.tileDestination(i, ROW) - offsetY, "spot");
+        var tile = this.add.sprite(this.tileDestination(j, COL), this.tileDestination(i, ROW) - offsetY, "tiles");
         tile.alpha = 0;
         tile.visible = 0;
         this.fieldGroup.add(tile);
@@ -87,8 +85,8 @@ var playGame = new Phaser.Class({
       }
     }
     var restartButton = this.add.sprite(
-      this.tileDestination(0, COL) + 262,
-      this.tileDestination(5, ROW) - 160,
+      this.tileDestination(0, COL) + 265,
+      this.tileDestination(5, ROW) - 250,
       "restart"
     );
     restartButton.setInteractive();
@@ -282,7 +280,7 @@ var playGame = new Phaser.Class({
     this.tweens.add({
       targets: [tile.tileSprite],
       x: this.tileDestination(col, COL),
-      y: this.tileDestination(row, ROW),
+      y: this.tileDestination(row, ROW) - offsetY,
       duration: gameOptions.tweenSpeed * distance,
       onComplete: function (tween) {
         tween.parent.scene.movingTiles--;
@@ -322,7 +320,7 @@ var playGame = new Phaser.Class({
       for (var j = 0; j < 4; j++) {
         this.fieldArray[i][j].canUpgrade = true;
         this.fieldArray[i][j].tileSprite.x = this.tileDestination(j, COL);
-        this.fieldArray[i][j].tileSprite.y = this.tileDestination(i, ROW);
+        this.fieldArray[i][j].tileSprite.y = this.tileDestination(i, ROW) - offsetY;
         if (this.fieldArray[i][j].tileValue > 0) {
           this.fieldArray[i][j].tileSprite.alpha = 1;
           this.fieldArray[i][j].tileSprite.visible = true;
@@ -344,22 +342,8 @@ var playGame = new Phaser.Class({
       pos * (gameOptions.tileSize + gameOptions.tileSpacing) +
       gameOptions.tileSize / 2 +
       gameOptions.tileSpacing +
-      offset
+      offset +
+      18
     );
   },
 });
-// 按比例调整窗口
-function resize() {
-  var canvas = document.querySelector("canvas");
-  var windowWidth = window.innerWidth;
-  var windowHeight = window.innerHeight;
-  var windowRatio = windowWidth / windowHeight;
-  var gameRatio = game.config.width / game.config.height;
-  if (windowRatio < gameRatio) {
-    canvas.style.width = windowWidth + "px";
-    canvas.style.height = windowWidth / gameRatio + "px";
-  } else {
-    canvas.style.width = windowHeight * gameRatio + "px";
-    canvas.style.height = windowHeight + "px";
-  }
-}
