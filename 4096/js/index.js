@@ -1,6 +1,3 @@
-// 进入游戏, 就开始加载游戏资源
-// game.state.start("main"); //启动第一个场景
-
 // 游戏提示内容板块
 const gameContainer = document.querySelector(".game-tips-container");
 
@@ -22,7 +19,7 @@ function goGamePage(score, isLeave) {
   if (isLeave) isSuccess = 0;
 
   wx.miniProgram.redirectTo({
-    url: `/packageD/pages/activity/25FathersDay/game/index?from=h5&issuccess=${isSuccess}&score=${score}`,
+    url: `/packageD/pages/activity/25Qixi/game/index?from=h5&issuccess=${isSuccess}&score=${score}`,
     success: (res) => {
       console.log(res); // 页面跳转成功
     },
@@ -35,7 +32,7 @@ function goGamePage(score, isLeave) {
 // 跳转到抽奖页面
 function goRafflePage(score) {
   wx.miniProgram.redirectTo({
-    url: `/packageD/pages/activity/25FathersDay/game/raffle/index?from=h5&issuccess=1&score=${score}`,
+    url: `/packageD/pages/activity/25Qixi/game/raffle/index?from=h5&issuccess=1&score=${score}`,
     success: (res) => {
       console.log(res); // 页面跳转成功
     },

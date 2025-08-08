@@ -1,4 +1,19 @@
+// 辅助函数，用于获取 URL 查询参数
+function getQueryVariable(variable) {
+  // 获取 URL 查询字符串
+  let query = window.location.search.substring(1);
+  let vars = query.split("&");
+  for (let i = 0; i < vars.length; i++) {
+    let pair = vars[i].split("=");
+    if (pair[0] === variable) {
+      return parseInt(pair[1], 10); // 转换为整数
+    }
+  }
+  return null;
+}
+
 var offsetY = 115;
+var successScore = 4096;
 var game;
 var score;
 var gameOptions = {
@@ -154,6 +169,38 @@ var playGame = new Phaser.Class({
       }
     }
   },
+  checkGameOver: function () {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        let currentValue = this.fieldArray[i][j].tileValue;
+
+        if (currentValue === 0) return false; // 有空格 => 没结束
+
+        if (j > 0 && currentValue === this.fieldArray[i][j - 1].tileValue) return false; // 左
+        if (j < 3 && currentValue === this.fieldArray[i][j + 1].tileValue) return false; // 右
+        if (i > 0 && currentValue === this.fieldArray[i - 1][j].tileValue) return false; // 上
+        if (i < 3 && currentValue === this.fieldArray[i + 1][j].tileValue) return false; // 下
+      }
+    }
+    return true; // 没有空格、也不能合并 => 结束
+  },
+  gameOver: function () {
+    let timer = setTimeout(() => {
+      if (this.score >= successScore) {
+        document.querySelector(".game-success-container").classList.remove("hidden");
+        document.getElementById("scoreNum").innerText = score;
+      } else {
+        // 没有达到成功分数，判断是否还有机会
+        var times = getQueryVariable("times");
+        if (times > 0) {
+          document.querySelector(".game-over-container-times").classList.remove("hidden");
+        } else {
+          document.querySelector(".game-over-container-no-times").classList.remove("hidden");
+        }
+      }
+      clearTimeout(timer);
+    }, 1500);
+  },
   //随机产生一个数字2
   addTile: function () {
     var emptyTiles = [];
@@ -178,8 +225,17 @@ var playGame = new Phaser.Class({
         duration: gameOptions.tweenSpeed,
         onComplete: function (tween) {
           tween.parent.scene.canMove = true;
+
+          // ✅ 只有在添加了 tile 后才检测是否结束
+          if (tween.parent.scene.checkGameOver()) {
+            tween.parent.scene.gameOver();
+          }
         },
       });
+    } else {
+      if (tween.parent.scene.checkGameOver()) {
+        tween.parent.scene.gameOver();
+      }
     }
   },
   //确定是哪些键被按下，执行相关的操作-移动handleMove()
@@ -290,6 +346,7 @@ var playGame = new Phaser.Class({
       }
     }
   },
+
   // 数字移动的效果(动画)
   moveTile: function (tile, row, col, distance, changeNumber) {
     this.movingTiles++;
