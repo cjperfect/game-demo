@@ -8,6 +8,7 @@
       body {
         padding: 0;
         margin: 0;
+        /* 12px */
         font-size: 1.6vw !important;
       }
       /* 基础样式设置 */
@@ -26,23 +27,18 @@
         image-rendering: crisp-edges;
       }
     </style>
+    <link rel="stylesheet" href="./css/index.css" />
   </head>
 
   <body>
-    <div id="gameCanvas"></div>
-
-    <div class="mask game-loading">
-      <div class="progress-out">
-        <div class="progress-line"></div>
-        <div class="progress-icon"></div>
-        <div class="loading-text">活动加载中...</div>
+    <div id="gameCanvas">
+      <!-- 进度条 -->
+      <div class="game-desc-container">
+        <div class="game-desc"></div>
+        <div class="game-progress">
+          <div class="game-progress-line"></div>
+        </div>
       </div>
-    </div>
-
-    <!-- 游戏说明 -->
-    <div class="mask game-desc-container hidden">
-      <div class="game-desc"></div>
-      <p>点击任意处继续</p>
     </div>
 
     <!-- 暂停 -->
