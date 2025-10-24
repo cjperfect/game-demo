@@ -23,6 +23,7 @@
   justify-content: center;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  z-index: 2;
 }
 
 .toTop {
@@ -43,7 +44,7 @@
   height: 24rem;
   top: 0;
   left: 0;
-  z-index: 9;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,7 +76,6 @@
   height: 3.33rem;
   background: url(../assets/game-tip.png) no-repeat;
   background-size: 100% 100%;
-  margin-top: 1.33rem;
 }
 
 .game-progress {
@@ -103,31 +103,13 @@
 .game-desc-container {
   width: 100%;
   height: 100%;
+  background: url(../assets/game-desc-placeholder.png) no-repeat;
+  background-size: 100% 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   backdrop-filter: none;
-  background: url(../assets/desc-placeholder.png) no-repeat;
-  background-size: 100% 100%;
-}
-
-.game-desc {
-  width: 45rem;
-  height: 30rem;
-  background: url(../assets/game-desc.png) no-repeat;
-  background-size: 100% 100%;
-  margin-top: 58rem;
-  position: relative;
-}
-
-.game-desc-container > p {
-  font-family: PingFangSC, PingFang SC;
-  font-weight: 400;
-  font-size: 2.17rem;
-  color: #ffffff;
-  line-height: 3.08rem;
-  margin-bottom: 20rem;
 }
 
 /* ======================暂停游戏============================== */
@@ -205,27 +187,14 @@
 /* ======================游戏通关============================== */
 .success {
   width: 62.5rem;
-  height: 99rem;
+  height: 60.17rem;
   background: url(../assets/game-success.png) no-repeat;
   background-size: 100% 100%;
 }
 
-#scoreNum {
-  width: 75%;
-  height: 7.33rem;
-  font-family: DINAlternate, DINAlternate;
-  font-weight: normal;
-  font-size: 7.33rem;
-  color: #222222;
-  line-height: 7.33rem;
-  margin-top: 37.58rem;
-  text-align: center;
-  margin-left: 8rem;
-}
-
 .lottery-btn {
   margin-left: 11.58rem;
-  margin-top: -1rem;
+  margin-top: 43rem;
   background: url(../assets/lottery-btn.png) no-repeat;
   background-size: 100% 100%;
 }
