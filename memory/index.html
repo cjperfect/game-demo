@@ -33,12 +33,19 @@
   <body>
     <div id="gameCanvas">
       <!-- 进度条 -->
-      <div class="game-desc-container">
-        <div class="game-desc"></div>
+      <div class="game-tip-container">
+        <div class="music-flag music-open"></div>
+        <div class="game-tip"></div>
         <div class="game-progress">
-          <div class="game-progress-line"></div>
+          <div class="game-progress-line" style="--progress: 99%"></div>
         </div>
       </div>
+    </div>
+
+    <!-- 游戏说明 -->
+    <div class="mask game-desc-container hidden">
+      <div class="game-desc"></div>
+      <p>点击任意处继续</p>
     </div>
 
     <!-- 暂停 -->
@@ -71,7 +78,9 @@
         <p class="continue-text">继续游戏</p>
       </div>
     </div>
-    <script src="js/phaser.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="./js/phaser.min.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>

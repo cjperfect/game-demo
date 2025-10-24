@@ -5,8 +5,6 @@
 #gameCanvas {
   width: 100%;
   height: 100%;
-  background: url(../assets/bg.png) no-repeat;
-  background-size: 100% 100%;
   position: relative;
 }
 
@@ -39,10 +37,10 @@
 }
 
 /* ==============================进度条区域========================== */
-.game-desc-container {
+.game-tip-container {
   position: absolute;
   width: 100%;
-  height: 26rem;
+  height: 24rem;
   top: 0;
   left: 0;
   z-index: 9;
@@ -53,10 +51,29 @@
   gap: 2.67rem;
 }
 
-.game-desc {
+.music-flag {
+  width: 4rem;
+  height: 4rem;
+  background: url(../assets/music_open.png) no-repeat;
+  background-size: 100% 100%;
+  margin-left: auto;
+  margin-right: 3rem;
+}
+
+.music-open {
+  animation: rotateFlag 1.5s infinite linear;
+}
+
+@keyframes rotateFlag {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.game-tip {
   width: 44.08rem;
   height: 3.33rem;
-  background: url(../assets/game-desc.png) no-repeat;
+  background: url(../assets/game-tip.png) no-repeat;
   background-size: 100% 100%;
   margin-top: 1.33rem;
 }
@@ -71,13 +88,46 @@
 }
 
 .game-progress-line {
-  width: 49.17rem;
+  /* width: 55.4rem; */
+  width: var(--progress);
   height: 2rem;
   background: linear-gradient(79deg, #95f2fd 0%, #d174ff 100%);
   border-radius: 1rem;
   position: absolute;
   top: 0.33rem;
   left: 0.33rem;
+  transition: all 300ms;
+}
+
+/* ======================游戏说明============================== */
+.game-desc-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: none;
+  background: url(../assets/desc-placeholder.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.game-desc {
+  width: 45rem;
+  height: 30rem;
+  background: url(../assets/game-desc.png) no-repeat;
+  background-size: 100% 100%;
+  margin-top: 58rem;
+  position: relative;
+}
+
+.game-desc-container > p {
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 2.17rem;
+  color: #ffffff;
+  line-height: 3.08rem;
+  margin-bottom: 20rem;
 }
 
 /* ======================暂停游戏============================== */
