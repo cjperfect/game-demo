@@ -115,14 +115,14 @@
 /* ======================暂停游戏============================== */
 .pause-desc {
   width: 62.5rem;
-  height: 63.33rem;
+  height: 31.67rem;
   background: url(../assets/game-pause.png) no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
 }
 
 .continue-btn {
-  margin-top: 33.66rem;
+  margin-top: 14.67rem;
   margin-left: 11.58rem;
   background: url(../assets/continue-btn.png) no-repeat;
   background-size: 100% 100%;

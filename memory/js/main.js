@@ -11,6 +11,11 @@ function getQueryVariable(variable) {
   }
   return null;
 }
+
+var score = 0;
+
+var isGameOver = false;
+
 var game;
 // 格子数量
 var blockNum = 20;
@@ -130,6 +135,7 @@ var gameState = function (game) {
             sec += 1;
             if (sec == 1) {
               console.log("通关了");
+              isGameOver = true;
               this.gameOver(true);
             }
           },
@@ -147,6 +153,7 @@ var gameState = function (game) {
     if (currentProgress <= 0) {
       currentProgress = 0;
       console.log("⏰ 时间到，游戏结束！");
+      isGameOver = true;
       this.gameOver(false);
     }
 
