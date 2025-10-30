@@ -12,7 +12,7 @@ function getQueryVariable(variable) {
   return null;
 }
 
-var score = 0;
+var score = 666;
 
 var isGameOver = false;
 

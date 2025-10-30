@@ -17,12 +17,11 @@ gameDesc.addEventListener("click", (e) => {
 });
 
 // 跳转到游戏启动页
-function goGamePage(score, isLeave) {
-  let isSuccess = score >= successScore ? 1 : 0;
+function goGamePage(isSuccess, isLeave) {
   if (isLeave) isSuccess = 0;
 
   wx.miniProgram.redirectTo({
-    url: `/packageD/pages/activity/25FathersDay/game/index?from=h5&issuccess=${isSuccess}&score=${score}`,
+    url: `/packageD/pages/activity/25118/game/index?from=h5&issuccess=${isSuccess}&score=${score}`,
     success: (res) => {
       console.log(res); // 页面跳转成功
     },
@@ -35,7 +34,7 @@ function goGamePage(score, isLeave) {
 // 跳转到抽奖页面
 function goRafflePage(score) {
   wx.miniProgram.redirectTo({
-    url: `/packageD/pages/activity/25FathersDay/game/raffle/index?from=h5&issuccess=1&score=${score}`,
+    url: `/packageD/pages/activity/25118/game/raffle/index?from=h5&issuccess=1&score=${score}`,
     success: (res) => {
       console.log(res); // 页面跳转成功
     },
@@ -48,13 +47,13 @@ function goRafflePage(score) {
 // 游戏失败, 有次数时候的开始游戏按钮
 const startBtn = document.querySelector(".start-btn");
 startBtn.addEventListener("click", () => {
-  goGamePage(score);
+  goGamePage(false);
 });
 
 // 游戏通关的继续游戏
 const continueText = document.querySelector(".continue-text");
 continueText.addEventListener("click", () => {
-  goGamePage(score);
+  goGamePage(true);
 });
 
 // 中断的继续游戏按钮
@@ -73,19 +72,19 @@ continueBtn.addEventListener("click", () => {
 // 中断的忍痛离开按钮
 const leaveBtn = document.querySelector(".leave-btn");
 leaveBtn.addEventListener("click", () => {
-  goGamePage(score, true);
+  goGamePage(false, true);
 });
 
 // 邀请好友
 const inviteBtn = document.querySelector(".invite-btn");
 inviteBtn.addEventListener("click", () => {
-  goGamePage(score);
+  goGamePage(false);
 });
 
 // 去抽奖
 const lotteryBtn = document.querySelector(".lottery-btn");
 lotteryBtn.addEventListener("click", () => {
-  goRafflePage(score);
+  goRafflePage(true);
 });
 
 function navBackListener() {
