@@ -1,5 +1,3 @@
-
-
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, "", {
   preload: preload,
   create: create,
@@ -27,15 +25,11 @@ function preload() {
   game.load.image("Gdian4", "image/guangdian0004.png");
   game.load.image("paizi", "image/fenshupai.png");
   game.load.image("Miss", "image/miss.png");
-  game.load.image("yuan", "image/baidi1.png");
   game.load.image("kaishi", "image/kaishi.png");
   game.load.image("jieshu", "image/youxijieshu.png");
   game.load.image("restart", "image/anniu.png");
-  game.load.image("go", "image/go.png");
-  game.load.image("ready", "image/READY.png");
   game.load.audio("mainMusic", "audio/xingxing.mp3");
   game.load.audio("missMusic", "audio/MISS.wav");
-  game.load.audio("readyMusic", "audio/readygo.mp3");
   game.load.audio("overMusic", "audio/over_audio.mp3");
 
   game.scale.pageAlignHorizontally = true;
@@ -51,12 +45,8 @@ function create() {
   // 点击开始的界面：
   starts = game.add.group();
   starts.inputEnabled = true;
-  // starts.enableBody = true;
-  yuan = game.add.sprite(gameWidth * 0.15, gameHeight * 0.16, "yuan");
-  yuan1 = game.add.sprite(gameWidth * 0.24, gameHeight * 0.21, "yuan");
+
   kaishi = game.add.sprite(gameWidth * 0.31, gameHeight * 0.3, "kaishi");
-  yuan.scale.setTo((gameWidth / 750) * 1.2);
-  yuan1.scale.setTo((gameWidth / 750) * 0.9);
   kaishi.scale.setTo((gameWidth / 750) * 1.2);
   // 给开始添加点击事件：
   kaishi.inputEnabled = true;
@@ -134,20 +124,79 @@ function create() {
   // 创建分数版：
   paizi = game.add.sprite(gameWidth * 0.265, gameHeight * 0.01, "paizi");
   paizi.scale.setTo((gameWidth / 750) * 1.3);
-  // 粒子效果：
-  good = game.add.text(gameWidth * 0.425, gameHeight * 0.02, "", { fill: "#ffffff" });
+
+  // 分数显示
+  good = game.add.text(gameWidth * 0.325, gameHeight * 0.02, "", { fill: "#ffffff" });
   good.scale.setTo((gameWidth / 750) * 1.3);
   good.text = "得分:" + goodCounter;
 
   // 关卡显示
-  levelText = game.add.text(gameWidth * 0.1, gameHeight * 0.02, "第1关", { fill: "#ffffff" });
+  levelText = game.add.text(gameWidth * 0.6, gameHeight * 0.02, "第1关", { fill: "#ffffff" });
   levelText.scale.setTo((gameWidth / 750) * 1.3);
 
   // 时间显示
-  timeText = game.add.text(gameWidth * 0.1, gameHeight * 0.05, "时间: 20秒", { fill: "#ffffff" });
+  timeText = game.add.text(gameWidth * 0.75, gameHeight * 0.02, "时间: 20秒", { fill: "#ffffff" });
   timeText.scale.setTo((gameWidth / 750) * 1.3);
 
+  // 创建关卡升级动画文本
+  boxGroup = game.add.group();
+  boxGroup.x = game.world.centerX - 200;
+  boxGroup.y = game.world.centerY + 125;
+  var rect = game.add.graphics(0, 0);
+  rect.beginFill("#000000", 0.8); // 蓝色、透明度 0.8
+  rect.drawRoundedRect(0, 0, 400, 250, 16); // 圆角矩形
+  rect.endFill();
+
+  tweenText = game.add.text(200, 125, "", {
+    fontSize: "26px",
+    fill: "#fff",
+    fontWeight: "normal",
+    align: "center",
+    lineHeight: 36,
+  });
+  tweenText.anchor.setTo(0.5);
+
+  boxGroup.add(rect);
+  boxGroup.add(tweenText);
+  boxGroup.visible = false;
+
+  comboText = game.add.text(100, 60, `连击: ${combo}`, {
+    fontSize: "30px",
+    fill: "#ffff00",
+    fontWeight: "bold",
+  });
+  comboText.anchor.setTo(0.5);
+
   gameOver = game.add.sprite();
+}
+
+/**
+ * 升级关卡
+ * 增加球数量并显示升级动画
+ */
+function levelUp() {
+  // 设置升级文本
+  boxGroup.visible = true;
+
+  var content =
+    "本关完成！\n" +
+    "本关得分：" +
+    goodCounter +
+    " 分\n" +
+    "本关通关要求：" +
+    targetScore +
+    " 分\n" +
+    "已成功进入下一关！\n" +
+    "下一关将在 2 秒后自动开始…";
+
+  tweenText.setText(content);
+
+  // 播放升级动画
+  game.add
+    .tween(boxGroup)
+    .to({ y: boxGroup.y - 100, alpha: 0.8 }, 300, "Linear", false)
+    .to({ y: boxGroup.y - 150 }, 300, "Linear", false)
+    .to({ y: boxGroup.y - 250, alpha: 0 }, 300, "Linear", true);
 }
 
 function update() {
@@ -170,17 +219,21 @@ function update() {
 
     // 更新关卡计时器
     levelTimer += game.time.elapsed;
-    var remainingTime = Math.max(0, levelTimeLimit - Math.floor(levelTimer / 1000));
-    timeText.text = "时间: " + remainingTime + "秒";
+    var elapsedSeconds = levelTimer / 1000;
+    var remainingTime = Math.max(0, levelTimeLimit - elapsedSeconds);
+    timeText.text = "时间: " + Math.ceil(remainingTime) + "秒";
 
-    // 检查关卡是否成功
-    if (goodCounter >= levelScoreTarget) {
-      levelComplete();
-    }
-
-    // 检查关卡是否超时
-    if (remainingTime <= 0) {
-      levelFailed();
+    // ----------------------
+    // 通关或失败检测
+    // ----------------------
+    if (elapsedSeconds >= levelTimeLimit) {
+      // 时间到关卡结束
+      if (goodCounter >= targetScore) {
+        levelComplete();
+      } else {
+        levelFailed();
+      }
+      isPlaying = false;
     }
   }
 
@@ -215,6 +268,10 @@ function update() {
 }
 // 根据节奏生成音符
 function generateRhythmicNotes() {
+  // 基础间隔
+  var baseInterval = 1000; // 1秒
+  var adjustedInterval = baseInterval / noteFrequency;
+
   // 随机选择要生成的音符位置
   var positions = [];
   if (Math.random() < 0.5) positions.push("left"); // 50%概率左边
@@ -236,7 +293,7 @@ function generateRhythmicNotes() {
 
   // 错开生成音符
   for (var i = 0; i < positions.length; i++) {
-    var delay = i * 300; // 每个音符间隔150毫秒
+    var delay = i * (adjustedInterval * 0.3); // 每个音符间隔30%
 
     game.time.events.add(
       delay,
@@ -244,13 +301,13 @@ function generateRhythmicNotes() {
         return function () {
           switch (position) {
             case "left":
-              createLeftNote();
+              createLeftNote(noteSpeed);
               break;
             case "center":
-              createCenterNote();
+              createCenterNote(noteSpeed);
               break;
             case "right":
-              createRightNote();
+              createRightNote(noteSpeed);
               break;
           }
         };
@@ -258,34 +315,33 @@ function generateRhythmicNotes() {
       this
     );
   }
-
-  // 更随机的间隔
-  noteInterval = 200 + Math.random() * 500; // 200-700毫秒的随机间隔
+  // 下一次生成音符的间隔随机 ±20%
+  noteInterval = adjustedInterval * (0.8 + Math.random() * 0.4);
 }
 
 // 创建左边音符
-function createLeftNote() {
+function createLeftNote(speed) {
   noteArrL[noteAddL] = notes1.create(gameWidth * 0.09, 0, "yinfu0");
   noteArrL[noteAddL].scale.setTo((gameWidth / 750) * 1);
-  noteArrL[noteAddL].body.velocity.y = (gameHeight / 3) * noteSpeed;
+  noteArrL[noteAddL].body.velocity.y = speed;
   noteArrL[noteAddL].inputEnabled = true;
   noteAddL++;
 }
 
 // 创建中间音符
-function createCenterNote() {
+function createCenterNote(speed) {
   noteArrC[noteAddC] = notes2.create(gameWidth * 0.368, 0, "yinfu1");
   noteArrC[noteAddC].scale.setTo((gameWidth / 750) * 1);
-  noteArrC[noteAddC].body.velocity.y = (gameHeight / 3) * noteSpeed;
+  noteArrC[noteAddC].body.velocity.y = speed;
   noteArrC[noteAddC].inputEnabled = true;
   noteAddC++;
 }
 
 // 创建右边音符
-function createRightNote() {
+function createRightNote(speed) {
   noteArrR[noteAddR] = notes3.create(gameWidth * 0.643, 0, "yinfu2");
   noteArrR[noteAddR].scale.setTo((gameWidth / 750) * 1);
-  noteArrR[noteAddR].body.velocity.y = (gameHeight / 3) * noteSpeed;
+  noteArrR[noteAddR].body.velocity.y = speed;
   noteArrR[noteAddR].inputEnabled = true;
   noteAddR++;
 }
@@ -336,7 +392,7 @@ function levelComplete() {
       Phaser.Timer.SECOND * 2,
       function () {
         levelCompleteText.destroy();
-        startNextLevel();
+        levelUp();
       },
       this
     );
@@ -387,23 +443,9 @@ function gameComplete() {
     Phaser.Timer.SECOND * 2,
     function () {
       gameCompleteText.destroy();
-      showGameOverScreen();
     },
     this
   );
-}
-
-// 开始下一关
-function startNextLevel() {
-  // 播放准备音乐
-  readyMusic = game.add.audio("readyMusic");
-  readyMusic.allowMultiple = false;
-  readyMusic.play();
-  readyMusic.onStop.add(readyStopped, this);
-
-  ready = game.add.sprite(gameWidth * 0.18, gameHeight * 0.3, "ready");
-  ready.scale.setTo((gameWidth / 750) * 1);
-  game.time.events.add(Phaser.Timer.SECOND * 0.5, readygo, this);
 }
 
 // 清除所有音符
@@ -441,37 +483,16 @@ function clearAllNotes() {
 
 // 显示游戏结束界面
 function showGameOverScreen() {
-  yuan = game.add.sprite(gameWidth * 0.15, gameHeight * 0.16, "yuan");
-  yuan1 = game.add.sprite(gameWidth * 0.24, gameHeight * 0.21, "yuan");
-  yuan.scale.setTo((gameWidth / 750) * 1.2);
-  yuan1.scale.setTo((gameWidth / 750) * 0.9);
   gameOver = game.add.sprite(gameWidth * 0.2, gameHeight * 0.2, "jieshu");
   gameOver.scale.setTo((gameWidth / 750) * 1.2);
   restartBtn = game.add.sprite(gameWidth * 0.42, gameHeight * 0.33, "restart");
   restartBtn.scale.setTo((gameWidth / 750) * 1);
   restartBtn.inputEnabled = true;
-
-  // 给按钮添加事件;
-  // 给精灵添加事件：
-  restartBtn.events.onInputDown.add(gameRestart, this);
 }
 
 function startHide() {
-  yuan.destroy();
-  yuan1.destroy();
   kaishi.destroy();
 
-  readyMusic = game.add.audio("readyMusic");
-  readyMusic.allowMultiple = false;
-  readyMusic.play();
-  readyMusic.onStop.add(readyStopped, this);
-
-  ready = game.add.sprite(gameWidth * 0.18, gameHeight * 0.3, "ready");
-  ready.scale.setTo((gameWidth / 750) * 1);
-  game.time.events.add(Phaser.Timer.SECOND * 0.5, readygo, this);
-}
-
-function readyStopped() {
   // 添加主音乐：
   mainMusic = game.add.audio("mainMusic");
   mainMusic.play();
@@ -480,57 +501,6 @@ function readyStopped() {
   // 开始节奏音符生成
   noteTimer = 0;
   noteInterval = 500;
-
-  // 监听主音乐结束：
-  mainMusic.onStop.add(musicStopped, this);
-}
-
-function musicStopped() {
-  isPlaying = false;
-  // 如果音乐自然结束但关卡还没完成，也显示游戏结束
-  if (goodCounter < levelScoreTarget) {
-    // showGameOverScreen();
-  }
-}
-
-function gameRestart() {
-  // 重置所有游戏状态
-  currentLevel = 1;
-  goodCounter = 0;
-  levelTimer = 0;
-  levelTimeLimit = 20;
-  noteSpeed = 1;
-
-  // 清除所有音符
-  clearAllNotes();
-
-  // 重置UI
-  good.text = "得分:" + goodCounter;
-  levelText.text = "第1关";
-  timeText.text = "时间: 20秒";
-
-  // 重新开始游戏
-  game.state.restart();
-}
-
-function startShow() {
-  yuan.reset(gameWidth * 0.15, gameHeight * 0.16);
-}
-
-function readygo() {
-  readyTween = game.add.tween(ready.scale).to({ x: 0, y: 0 }, 500, null, true);
-  readyTween = game.add.tween(ready).to({ x: gameWidth * 0.48, y: gameHeight * 0.36 }, 500, null, true);
-  readyTween.onComplete.add(gogo, this);
-}
-
-function gogo() {
-  go = game.add.sprite(gameWidth * 0.35, gameHeight * 0.3, "go");
-  go.scale.setTo((gameWidth / 750) * 1);
-  game.time.events.add(Phaser.Timer.SECOND * 0.5, goHide, this);
-}
-
-function goHide() {
-  go.destroy();
 }
 
 function missOUt() {
@@ -540,10 +510,18 @@ function missOUt() {
   }
 }
 
+// func  func1  func2 左中右命中后的逻辑
 function func() {
   if (noteArrL[btnAddL] && checkOverlap(noteArrL[btnAddL], boundary1)) {
     goodCounter++;
     good.text = "得分:" + goodCounter;
+
+    // Combo 增加
+    combo++;
+    maxCombo = Math.max(maxCombo, combo);
+    comboText.text = "连击：" + combo;
+
+    // 粒子效果
     emitter1 = game.add.emitter(0.1, 0, 10);
     emitter1.makeParticles(["Gdian1", "Gdian2", "Gdian3", "Gdian4"]);
     emitter1.gravity = -400;
@@ -552,7 +530,12 @@ function func() {
     emitter1.y = gameHeight * 0.75;
     emitter1.start(true, 1000, null, 30);
     noteArrL[btnAddL].kill();
+
     btnAddL++;
+  } else {
+    // MISS 清空连击
+    combo = 0;
+    comboText.text = "连击：0";
   }
 }
 
@@ -560,6 +543,12 @@ function func1() {
   if (noteArrC[btnAddC] && checkOverlap(noteArrC[btnAddC], boundary2)) {
     goodCounter++;
     good.text = "得分:" + goodCounter;
+
+    // Combo 增加
+    combo++;
+    maxCombo = Math.max(maxCombo, combo);
+    comboText.text = "连击：" + combo;
+
     emitter2 = game.add.emitter(0, 0, 10);
     emitter2.makeParticles(["Gdian1", "Gdian2", "Gdian3", "Gdian4"]);
     emitter2.gravity = -400;
@@ -569,6 +558,10 @@ function func1() {
     emitter2.start(true, 1000, null, 10);
     noteArrC[btnAddC].kill();
     btnAddC++;
+  } else {
+    // MISS 清空连击
+    combo = 0;
+    comboText.text = "连击：0";
   }
 }
 
@@ -576,6 +569,12 @@ function func2() {
   if (noteArrR[btnAddR] && checkOverlap(noteArrR[btnAddR], boundary3)) {
     goodCounter++;
     good.text = "得分:" + goodCounter;
+
+    // Combo 增加
+    combo++;
+    maxCombo = Math.max(maxCombo, combo);
+    comboText.text = "连击：" + combo;
+
     emitter3 = game.add.emitter(0, 0, 10);
     emitter3.makeParticles(["Gdian1", "Gdian2", "Gdian3", "Gdian4"]);
     emitter3.gravity = -400;
@@ -585,6 +584,10 @@ function func2() {
     emitter3.start(true, 1000, null, 20);
     noteArrR[btnAddR].kill();
     btnAddR++;
+  } else {
+    // MISS 清空连击
+    combo = 0;
+    comboText.text = "连击：0";
   }
 }
 

@@ -1,56 +1,83 @@
-// 关卡配置表
-const LEVELS = [
-  { id: 1, duration: 20, speed: 350, freq: 1.0, total: 20, passScore: 13 },
-  { id: 2, duration: 22, speed: 450, freq: 1.2, total: 26, passScore: 18 },
-  { id: 3, duration: 24, speed: 550, freq: 1.4, total: 33, passScore: 23 },
-  { id: 4, duration: 26, speed: 650, freq: 1.6, total: 41, passScore: 31 },
-  { id: 5, duration: 28, speed: 750, freq: 1.8, total: 50, passScore: 39 },
-];
+// 游戏关卡配置
+var levelConfig = {
+  1: {
+    timeLimit: 20, // 秒
+    noteSpeed: 350, // px/s
+    frequency: 1.0, // 条/秒
+    targetScore: 13, // 通关分数
+    estimatedNotes: 20, // 预计总条数
+  },
+  2: {
+    timeLimit: 22,
+    noteSpeed: 450,
+    frequency: 1.2,
+    targetScore: 18,
+    estimatedNotes: 26,
+  },
+  3: {
+    timeLimit: 24,
+    noteSpeed: 550,
+    frequency: 1.4,
+    targetScore: 23,
+    estimatedNotes: 33,
+  },
+  4: {
+    timeLimit: 26,
+    noteSpeed: 650,
+    frequency: 1.6,
+    targetScore: 31,
+    estimatedNotes: 41,
+  },
+  5: {
+    timeLimit: 28,
+    noteSpeed: 750,
+    frequency: 1.8,
+    targetScore: 39,
+    estimatedNotes: 50,
+  },
+};
 
 var gameWidth = 750;
 var gameHeight = 1660;
 
-var boundary;
-var boundarys;
+// 点击的地方  左 中 右
+var boundary1, boundary2, boundary3, boundarys;
+var btn1, btn2, btn3, btns;
+
+// 音符数组 左中右
 var noteArrL = [];
 var noteArrC = [];
 var noteArrR = [];
-var note;
-var note2;
-var note3;
-var notes;
-var ground;
-var ground1;
-var btn;
-var btn1;
-var btn2;
-var btn3;
-var btns;
-var cursors;
-var boundary1;
-var boundary2;
-var boundary3;
+
 var noteAddL = 0;
 var noteAddC = 0;
 var noteAddR = 0;
+
 var btnAddL = 0;
 var btnAddC = 0;
 var btnAddR = 0;
+
+// 命中的光效
 var guang1;
 var guang2;
 var guang3;
+
 var emitter1;
 var emitter2;
 var emitter3;
 var emitter4;
+
 var good;
 // 得分计数器
 var goodCounter = 0;
+
 // miss计数器
 var missCounter = 0;
 var miss;
+
 var paizi;
 var starts;
+
 var yuan;
 var yuan1;
 var kaishi;
@@ -72,6 +99,21 @@ var currentLevel = 1;
 var levelText;
 var timeText;
 var levelTimer = 0;
-var levelTimeLimit = 20; // 第一关时间限制(秒)
-var levelScoreTarget = 10; // 每关目标分数
-var noteSpeed = 1; // 音符速度因子
+// 升级关卡动画元素
+var boxGroup;
+var tweenText;
+
+// 基准值用于计算比例
+var BASE_NOTE_SPEED = 350; // 基础下落速度
+// 当前关卡
+var currentLevel = 1;
+var noteFrequency = levelConfig[currentLevel].frequency; // 条/秒
+var noteSpeed = levelConfig[currentLevel].noteSpeed; // px/s
+var noteInterval = 1000 / noteFrequency; // 基础间隔
+var targetScore = levelConfig[currentLevel].targetScore;
+var levelTimeLimit = levelConfig[currentLevel].timeLimit;
+
+/************* 连击系统 *************/
+var combo = 0,
+  maxCombo = 0,
+  comboText;
