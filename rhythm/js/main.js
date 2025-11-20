@@ -200,6 +200,7 @@ function levelUp() {
 }
 
 function update() {
+  if (!isPlaying) return;
   btn1.events.onInputDown.add(onDown1, this);
   btn1.events.onInputUp.add(onUp1, this);
   btn2.events.onInputDown.add(onDown2, this);
@@ -207,33 +208,37 @@ function update() {
   btn3.events.onInputDown.add(onDown3, this);
   btn3.events.onInputUp.add(onUp3, this);
 
-  // 更新音符生成计时器
-  if (isPlaying) {
-    noteTimer += game.time.elapsed;
-    if (noteTimer >= noteInterval) {
-      generateRhythmicNotes();
-      noteTimer = 0;
-      // 动态调整音符间隔，模拟节奏变化
-      noteInterval = 300 + Math.random() * 400;
-    }
+  // ----------------------
+  // 1. 生成音符计时器
+  // ----------------------
+  noteTimer += game.time.elapsed;
 
-    // 更新关卡计时器
-    levelTimer += game.time.elapsed;
-    var elapsedSeconds = levelTimer / 1000;
-    var remainingTime = Math.max(0, levelTimeLimit - elapsedSeconds);
-    timeText.text = "时间: " + Math.ceil(remainingTime) + "秒";
+  // 目标间隔 = frequency（条/秒） → 转换成毫秒
+  var targetInterval = 1000 / noteFrequency;
 
-    // ----------------------
-    // 通关或失败检测
-    // ----------------------
-    if (elapsedSeconds >= levelTimeLimit) {
-      // 时间到关卡结束
-      if (goodCounter >= targetScore) {
-        levelComplete();
-      } else {
-        levelFailed();
-      }
-      isPlaying = false;
+  if (noteTimer >= targetInterval) {
+    generateRhythmicNotes();
+    noteTimer = 0;
+  }
+
+  // ----------------------
+  // 2. 更新关卡时间
+  // ----------------------
+  levelTimer += game.time.elapsed;
+  var elapsedSeconds = levelTimer / 1000;
+  var remainingTime = Math.max(0, levelTimeLimit - elapsedSeconds);
+  timeText.text = "时间: " + Math.ceil(remainingTime) + "秒";
+
+  // ----------------------
+  // 3. 时间到，判断通关 / 失败
+  // ----------------------
+  if (remainingTime <= 0) {
+    isPlaying = false;
+
+    if (goodCounter >= targetScore) {
+      levelComplete();
+    } else {
+      levelFailed();
     }
   }
 
@@ -358,48 +363,42 @@ function levelComplete() {
   // 清除所有音符
   clearAllNotes();
 
-  // 显示关卡完成信息
-  var levelCompleteText = game.add.text(gameWidth * 0.2, gameHeight * 0.4, "第" + currentLevel + "关完成!", {
-    fill: "#ffffff",
-    fontSize: "40px",
-  });
-  levelCompleteText.scale.setTo((gameWidth / 750) * 1.3);
+  levelUp(currentLevel);
 
-  // 进入下一关
-  currentLevel++;
+  game.time.events.add(
+    Phaser.Timer.SECOND * 2,
+    function () {
+      // 升级关卡
+      currentLevel++;
 
-  if (currentLevel <= 3) {
-    // 设置下一关参数
-    if (currentLevel === 2) {
-      levelTimeLimit = 15; // 第二关15秒
-      noteSpeed = 1.3; // 音符速度加快
-    } else if (currentLevel === 3) {
-      levelTimeLimit = 10; // 第三关10秒
-      noteSpeed = 1.6; // 音符速度更快
-    }
+      if (currentLevel <= levelNum) {
+        // 根据 levelConfig 设置下一关参数
+        levelTimeLimit = levelConfig[currentLevel].timeLimit;
+        noteSpeed = levelConfig[currentLevel].noteSpeed;
+        noteFrequency = levelConfig[currentLevel].frequency;
+        targetScore = levelConfig[currentLevel].targetScore;
 
-    // 重置计数器
-    goodCounter = 0;
-    good.text = "得分:" + goodCounter;
-    levelTimer = 0;
+        // 重置计数器
+        goodCounter = 0;
+        good.text = "得分:" + goodCounter;
+        combo = 0;
+        comboText.text = "";
 
-    // 更新关卡显示
-    levelText.text = "第" + currentLevel + "关";
-    timeText.text = "时间: " + levelTimeLimit + "秒";
+        levelTimer = 0;
 
-    // 延迟后开始下一关
-    game.time.events.add(
-      Phaser.Timer.SECOND * 2,
-      function () {
-        levelCompleteText.destroy();
-        levelUp();
-      },
-      this
-    );
-  } else {
-    // 游戏通关
-    gameComplete();
-  }
+        // 更新关卡显示
+        levelText.text = "第" + currentLevel + "关";
+        timeText.text = "时间: " + levelTimeLimit + "秒";
+
+        // 开始下一关
+        isPlaying = true;
+      } else {
+        // 游戏通关
+        gameComplete();
+      }
+    },
+    this
+  );
 }
 
 // 关卡失败

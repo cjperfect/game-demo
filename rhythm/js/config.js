@@ -1,10 +1,10 @@
 // 游戏关卡配置
 var levelConfig = {
   1: {
-    timeLimit: 20, // 秒
+    timeLimit: 3, // 秒
     noteSpeed: 350, // px/s
     frequency: 1.0, // 条/秒
-    targetScore: 13, // 通关分数
+    targetScore: 1, // 通关分数
     estimatedNotes: 20, // 预计总条数
   },
   2: {
@@ -36,6 +36,8 @@ var levelConfig = {
     estimatedNotes: 50,
   },
 };
+
+var levelNum = 5;
 
 var gameWidth = 750;
 var gameHeight = 1660;
