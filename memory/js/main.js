@@ -25,6 +25,8 @@ var currentProgress = 99;
 var totalTime = 30;
 // 防止在两张卡正在判定时继续点击
 var lock = false;
+// 游戏是否开始
+var isGameStart = false;
 
 /* ---------------------- 资源加载状态 loaderState ---------------------- */
 var loaderState = function (game) {
@@ -33,6 +35,12 @@ var loaderState = function (game) {
     game.load.image("bg", "assets/bg.png");
     game.load.image("block", "assets/block.png");
     game.load.spritesheet("card", "./assets/card.png", 800 / 5, 360 / 2, 10);
+
+    game.load.onFileComplete.add(function (progress) {
+      if (progress === 100) {
+        game.state.start("main");
+      }
+    });
   };
 };
 
@@ -104,19 +112,22 @@ var gameState = function (game) {
       block[i].card = card[i];
 
       // --- 添加flag文字，用于调试 ---
-      var text = game.add.text(
-        block[i].x + block[i].width / 2 - 90,
-        block[i].y + block[i].height / 2 - 90,
-        block[i].flag,
-        {
-          font: "24px",
-        }
-      );
-      text.anchor.set(0.5); // 居中显示
+      // var text = game.add.text(
+      //   block[i].x + block[i].width / 2 - 90,
+      //   block[i].y + block[i].height / 2 - 90,
+      //   block[i].flag,
+      //   {
+      //     font: "6rem",
+      //   }
+      // );
+      // text.anchor.set(0.5); // 居中显示
     }
   };
 
   this.update = function () {
+    // 游戏一开始暂停, 需要用户点击完游戏介绍页才开始
+    game.paused = !isGameStart;
+
     // 绑定点击事件
     for (var i = 0; i < block.length; i++) {
       block[i].events.onInputDown.add(onDown, this);
@@ -130,7 +141,8 @@ var gameState = function (game) {
         spend = stime;
         var sec = 0;
         game.time.events.loop(
-          Phaser.Timer.SECOND,
+          // Phaser.Timer.SECOND,
+          500,
           function () {
             sec += 1;
             if (sec == 1) {
@@ -162,13 +174,9 @@ var gameState = function (game) {
   };
 
   this.gameOver = function (isSuccess) {
-    // 音乐暂停
-    document.querySelector(".music-flag").classList.remove("music-open");
-
     // isSuccess 是否通关
     if (isSuccess) {
       document.querySelector(".game-success-container").classList.remove("hidden");
-      document.getElementById("scoreNum").innerText = score;
       return;
     } else {
       // 没有通关, 判断是否还有机会
@@ -193,14 +201,14 @@ var gameState = function (game) {
 
     game.add
       .tween(cardSprite.scale)
-      .to({ x: 0 }, 140, Phaser.Easing.Linear.None, true)
+      .to({ x: 0 }, 80, Phaser.Easing.Linear.None, true)
       .onComplete.add(function () {
         // 切换显隐（正反面）
         cardSprite.alpha = cardSprite.alpha === 0 ? 1 : 0;
 
         game.add
           .tween(cardSprite.scale)
-          .to({ x: 1 }, 140, Phaser.Easing.Linear.None, true)
+          .to({ x: 1 }, 80, Phaser.Easing.Linear.None, true)
           .onComplete.add(function () {
             if (onComplete) onComplete();
           });
@@ -263,7 +271,7 @@ var gameState = function (game) {
       } else {
         // 未匹配：延迟翻回（使用局部引用，安全）
         game.time.events.add(
-          200,
+          140,
           function () {
             // 再次防护检查
             if (firstCard) {

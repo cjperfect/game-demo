@@ -13,7 +13,9 @@ const gameDom = document.querySelector("#game-container");
 gameDesc.addEventListener("click", (e) => {
   e.currentTarget.classList.add("hidden");
   // 启动游戏
-  game.state.start("main");
+  game.paused = false;
+  isGameStart = true;
+  // game.state.start("main");
 });
 
 // 跳转到游戏启动页
@@ -32,7 +34,7 @@ function goGamePage(isSuccess, isLeave) {
 }
 
 // 跳转到抽奖页面
-function goRafflePage(score) {
+function goRafflePage() {
   wx.miniProgram.redirectTo({
     url: `/packageD/pages/activity/25118/game/raffle/index?from=h5&issuccess=1&score=${score}`,
     success: (res) => {
@@ -47,13 +49,13 @@ function goRafflePage(score) {
 // 游戏失败, 有次数时候的开始游戏按钮
 const startBtn = document.querySelector(".start-btn");
 startBtn.addEventListener("click", () => {
-  goGamePage(false);
+  goGamePage(0);
 });
 
 // 游戏通关的继续游戏
 const continueText = document.querySelector(".continue-text");
 continueText.addEventListener("click", () => {
-  goGamePage(true);
+  goGamePage(1);
 });
 
 // 中断的继续游戏按钮
@@ -72,19 +74,19 @@ continueBtn.addEventListener("click", () => {
 // 中断的忍痛离开按钮
 const leaveBtn = document.querySelector(".leave-btn");
 leaveBtn.addEventListener("click", () => {
-  goGamePage(false, true);
+  goGamePage(0, true);
 });
 
 // 邀请好友
 const inviteBtn = document.querySelector(".invite-btn");
 inviteBtn.addEventListener("click", () => {
-  goGamePage(false);
+  goGamePage(0);
 });
 
 // 去抽奖
 const lotteryBtn = document.querySelector(".lottery-btn");
 lotteryBtn.addEventListener("click", () => {
-  goRafflePage(true);
+  goRafflePage();
 });
 
 function navBackListener() {

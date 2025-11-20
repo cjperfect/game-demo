@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -33,7 +33,7 @@
   <body>
     <div id="gameCanvas">
       <!-- 进度条 -->
-      <div class="game-tip-container">
+      <div class="game-tip-container hidden">
         <div class="game-tip"></div>
         <div class="game-progress">
           <div class="game-progress-line" style="--progress: 99%"></div>
@@ -43,7 +43,7 @@
 
     
     <!-- 游戏说明 -->
-    <div class="mask game-desc-container"></div>
+    <div class="mask game-desc-container hidden"></div>
 
     <!-- 暂停 -->
     <div class="mask pause-container hidden">
@@ -76,7 +76,8 @@
     </div>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <script src="./js/phaser.min.js"></script>
+    <script src="./js/config.js"></script>
     <script src="./js/main.js"></script>
-    <script src="./js/index.js"></script>
+    <!-- <script src="./js/index.js"></script> -->
   </body>
 </html>

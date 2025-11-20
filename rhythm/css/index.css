@@ -55,7 +55,7 @@
 .game-tip {
   width: 44.08rem;
   height: 3.33rem;
-  background: url(../assets/game-tip.png) no-repeat;
+  background: url(../image/game-tip.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -86,7 +86,7 @@
   height: 100%;
   flex-direction: column;
   backdrop-filter: none;
-  background: url(../assets/game-desc-placeholder.png) no-repeat;
+  background: url(../image/game-desc-placeholder.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -94,7 +94,7 @@
 .pause-desc {
   width: 62.5rem;
   height: 31.67rem;
-  background: url(../assets/game-pause.png) no-repeat;
+  background: url(../image/game-pause.png) no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
 }
@@ -102,7 +102,7 @@
 .continue-btn {
   margin-top: 14.67rem;
   margin-left: 11.58rem;
-  background: url(../assets/continue-btn.png) no-repeat;
+  background: url(../image/continue-btn.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -129,14 +129,14 @@
   bottom: 0;
   top: 0;
   margin: auto;
-  background-image: url(../assets/game-over-times.png);
+  background-image: url(../image/game-over-times.png);
   background-size: 100% 100%;
 }
 
 .start-btn {
   margin-top: 38.33rem;
   margin-left: 11.58rem;
-  background: url(../assets/start-btn.png) no-repeat;
+  background: url(../image/start-btn.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -151,14 +151,14 @@
   margin: auto;
   width: 62.5rem;
   height: 63.33rem;
-  background-image: url(../assets/game-over-no-times.png);
+  background-image: url(../image/game-over-no-times.png);
   background-size: 100% 100%;
 }
 
 .invite-btn {
   margin-top: 43.17rem;
   margin-left: 11.58rem;
-  background: url(../assets/invite-btn.png) no-repeat;
+  background: url(../image/invite-btn.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -166,7 +166,7 @@
 .success {
   width: 62.5rem;
   height: 60.17rem;
-  background: url(../assets/game-success.png) no-repeat;
+  background: url(../image/game-success.png) no-repeat;
   background-size: 100% 100%;
   margin-top: -30rem;
 }
@@ -176,7 +176,7 @@
   height: 9.33rem;
   margin-left: 12.5rem;
   margin-top: 43rem;
-  background: url(../assets/lottery-btn.png) no-repeat;
+  background: url(../image/lottery-btn.png) no-repeat;
   background-size: 100% 100%;
 }
 
