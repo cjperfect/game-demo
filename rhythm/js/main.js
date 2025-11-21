@@ -329,7 +329,12 @@ function createLeftNote(speed) {
   noteArrL[noteAddL] = notes1.create(gameWidth * 0.09, 0, "yinfu0");
   noteArrL[noteAddL].scale.setTo((gameWidth / 750) * 1);
   noteArrL[noteAddL].body.velocity.y = speed;
+  noteArrL[noteAddL].alpha = 0;
   noteArrL[noteAddL].inputEnabled = true;
+  const temp = noteAddL;
+  setTimeout(() => {
+    noteArrL[temp].alpha = 1;
+  }, 100);
   noteAddL++;
 }
 
@@ -338,7 +343,12 @@ function createCenterNote(speed) {
   noteArrC[noteAddC] = notes2.create(gameWidth * 0.368, 0, "yinfu1");
   noteArrC[noteAddC].scale.setTo((gameWidth / 750) * 1);
   noteArrC[noteAddC].body.velocity.y = speed;
+  noteArrC[noteAddC].alpha = 0;
   noteArrC[noteAddC].inputEnabled = true;
+  const temp = noteAddC;
+  setTimeout(() => {
+    noteArrC[temp].alpha = 1;
+  }, 100);
   noteAddC++;
 }
 
@@ -347,7 +357,12 @@ function createRightNote(speed) {
   noteArrR[noteAddR] = notes3.create(gameWidth * 0.643, 0, "yinfu2");
   noteArrR[noteAddR].scale.setTo((gameWidth / 750) * 1);
   noteArrR[noteAddR].body.velocity.y = speed;
+  noteArrR[noteAddR].alpha = 0;
   noteArrR[noteAddR].inputEnabled = true;
+  const temp = noteAddR;
+  setTimeout(() => {
+    noteArrR[temp].alpha = 1;
+  }, 100);
   noteAddR++;
 }
 
@@ -379,11 +394,6 @@ function levelComplete() {
         targetScore = levelConfig[currentLevel].targetScore;
 
         // 重置计数器
-        goodCounter = 0;
-        good.text = "得分:" + goodCounter;
-        combo = 0;
-        comboText.text = "";
-
         levelTimer = 0;
 
         // 更新关卡显示
@@ -410,41 +420,16 @@ function levelFailed() {
     mainMusic.stop();
   }
 
-  // 显示失败信息
-  var levelFailedText = game.add.text(gameWidth * 0.2, gameHeight * 0.4, "时间到! 游戏结束", {
-    fill: "#ffffff",
-    fontSize: "40px",
-  });
-  levelFailedText.scale.setTo((gameWidth / 750) * 1.3);
+  game.paused = true;
 
-  // 延迟后显示重新开始界面
-  game.time.events.add(
-    Phaser.Timer.SECOND * 2,
-    function () {
-      levelFailedText.destroy();
-      showGameOverScreen();
-    },
-    this
-  );
+  // 游戏失败
+  alert("游戏失败了");
 }
 
 // 游戏通关
 function gameComplete() {
-  // 显示通关信息
-  var gameCompleteText = game.add.text(gameWidth * 0.2, gameHeight * 0.4, "恭喜通关!", {
-    fill: "#ffffff",
-    fontSize: "40px",
-  });
-  gameCompleteText.scale.setTo((gameWidth / 750) * 1.3);
-
-  // 延迟后显示重新开始界面
-  game.time.events.add(
-    Phaser.Timer.SECOND * 2,
-    function () {
-      gameCompleteText.destroy();
-    },
-    this
-  );
+  game.paused = true;
+  alert("游戏通关了");
 }
 
 // 清除所有音符
@@ -480,15 +465,7 @@ function clearAllNotes() {
   btnAddR = 0;
 }
 
-// 显示游戏结束界面
-function showGameOverScreen() {
-  gameOver = game.add.sprite(gameWidth * 0.2, gameHeight * 0.2, "jieshu");
-  gameOver.scale.setTo((gameWidth / 750) * 1.2);
-  restartBtn = game.add.sprite(gameWidth * 0.42, gameHeight * 0.33, "restart");
-  restartBtn.scale.setTo((gameWidth / 750) * 1);
-  restartBtn.inputEnabled = true;
-}
-
+// 开始游戏
 function startHide() {
   kaishi.destroy();
 
@@ -502,6 +479,7 @@ function startHide() {
   noteInterval = 500;
 }
 
+// miss 隐藏
 function missOUt() {
   if (miss) {
     miss.destroy();
@@ -509,16 +487,38 @@ function missOUt() {
   }
 }
 
+// 得分 / 连击逻辑处理
+function scoreLogic(isSuccess) {
+  if (isSuccess) {
+    // Combo 增加
+    combo++;
+    goodCounter++;
+
+    /**
+     * 连击达到 10：额外 +1 分
+     * 连击达到 20：额外 +3 分
+     */
+
+    // ===== 连击奖励逻辑 =====
+    if (comboRewards[combo] && !comboRewardGiven[combo]) {
+      goodCounter += comboRewards[combo]; // 加奖励分
+      comboRewardGiven[combo] = true; // 标记该奖励已发放
+    }
+
+    good.text = "得分:" + goodCounter;
+    comboText.text = "连击：" + combo;
+  } else {
+    // MISS 清空连击
+    combo = 0;
+    comboRewardGiven = { ...BASE_COMBO_REWARD_GIVEN };
+    comboText.text = "连击：0";
+  }
+}
+
 // func  func1  func2 左中右命中后的逻辑
 function func() {
   if (noteArrL[btnAddL] && checkOverlap(noteArrL[btnAddL], boundary1)) {
-    goodCounter++;
-    good.text = "得分:" + goodCounter;
-
-    // Combo 增加
-    combo++;
-    maxCombo = Math.max(maxCombo, combo);
-    comboText.text = "连击：" + combo;
+    scoreLogic(true);
 
     // 粒子效果
     emitter1 = game.add.emitter(0.1, 0, 10);
@@ -532,21 +532,13 @@ function func() {
 
     btnAddL++;
   } else {
-    // MISS 清空连击
-    combo = 0;
-    comboText.text = "连击：0";
+    scoreLogic(false);
   }
 }
 
 function func1() {
   if (noteArrC[btnAddC] && checkOverlap(noteArrC[btnAddC], boundary2)) {
-    goodCounter++;
-    good.text = "得分:" + goodCounter;
-
-    // Combo 增加
-    combo++;
-    maxCombo = Math.max(maxCombo, combo);
-    comboText.text = "连击：" + combo;
+    scoreLogic(true);
 
     emitter2 = game.add.emitter(0, 0, 10);
     emitter2.makeParticles(["Gdian1", "Gdian2", "Gdian3", "Gdian4"]);
@@ -558,21 +550,13 @@ function func1() {
     noteArrC[btnAddC].kill();
     btnAddC++;
   } else {
-    // MISS 清空连击
-    combo = 0;
-    comboText.text = "连击：0";
+    scoreLogic(false);
   }
 }
 
 function func2() {
   if (noteArrR[btnAddR] && checkOverlap(noteArrR[btnAddR], boundary3)) {
-    goodCounter++;
-    good.text = "得分:" + goodCounter;
-
-    // Combo 增加
-    combo++;
-    maxCombo = Math.max(maxCombo, combo);
-    comboText.text = "连击：" + combo;
+    scoreLogic(true);
 
     emitter3 = game.add.emitter(0, 0, 10);
     emitter3.makeParticles(["Gdian1", "Gdian2", "Gdian3", "Gdian4"]);
@@ -584,9 +568,7 @@ function func2() {
     noteArrR[btnAddR].kill();
     btnAddR++;
   } else {
-    // MISS 清空连击
-    combo = 0;
-    comboText.text = "连击：0";
+    scoreLogic(false);
   }
 }
 

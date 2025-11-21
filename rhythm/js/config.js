@@ -1,39 +1,34 @@
 // 游戏关卡配置
 var levelConfig = {
   1: {
-    timeLimit: 3, // 秒
-    noteSpeed: 350, // px/s
+    timeLimit: 10, // 秒
+    noteSpeed: 200, // px/s
     frequency: 1.0, // 条/秒
-    targetScore: 1, // 通关分数
-    estimatedNotes: 20, // 预计总条数
+    targetScore: 2, // 通关分数
   },
   2: {
     timeLimit: 22,
-    noteSpeed: 450,
+    noteSpeed: 260,
     frequency: 1.2,
     targetScore: 18,
-    estimatedNotes: 26,
   },
   3: {
     timeLimit: 24,
-    noteSpeed: 550,
+    noteSpeed: 360,
     frequency: 1.4,
     targetScore: 23,
-    estimatedNotes: 33,
   },
   4: {
     timeLimit: 26,
-    noteSpeed: 650,
+    noteSpeed: 460,
     frequency: 1.6,
     targetScore: 31,
-    estimatedNotes: 41,
   },
   5: {
     timeLimit: 28,
-    noteSpeed: 750,
+    noteSpeed: 560,
     frequency: 1.8,
     targetScore: 39,
-    estimatedNotes: 50,
   },
 };
 
@@ -94,7 +89,6 @@ var mainMusic;
 // 新增变量用于节奏音符生成
 var isPlaying = false;
 var noteTimer = 0;
-var noteInterval = 500; // 初始音符间隔(毫秒)
 
 // 关卡系统变量
 var currentLevel = 1;
@@ -117,5 +111,20 @@ var levelTimeLimit = levelConfig[currentLevel].timeLimit;
 
 /************* 连击系统 *************/
 var combo = 0,
-  maxCombo = 0,
   comboText;
+
+// 用于初始化连击奖励表
+var BASE_COMBO_REWARD_GIVEN = {
+  10: false,
+  20: false,
+};
+// 用来记录已经给予过的连击奖励，避免重复发放
+var comboRewardGiven = {
+  ...BASE_COMBO_REWARD_GIVEN,
+};
+
+// ===== 连击奖励表（可随意扩展） =====
+var comboRewards = {
+  10: 1, // 连击 10 额外 +1 分
+  20: 3, // 连击 20 额外 +3 分
+};
