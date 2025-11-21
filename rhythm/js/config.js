@@ -1,34 +1,34 @@
 // 游戏关卡配置
 var levelConfig = {
   1: {
-    timeLimit: 10, // 秒
-    noteSpeed: 200, // px/s
+    timeLimit: 8, // 秒
+    noteSpeed: 400, // px/s
     frequency: 1.0, // 条/秒
-    targetScore: 2, // 通关分数
+    targetScore: 0, // 通关分数
   },
   2: {
-    timeLimit: 22,
-    noteSpeed: 260,
+    timeLimit: 8,
+    noteSpeed: 500,
     frequency: 1.2,
-    targetScore: 18,
+    targetScore: 0,
   },
   3: {
-    timeLimit: 24,
+    timeLimit: 5,
     noteSpeed: 360,
     frequency: 1.4,
-    targetScore: 23,
+    targetScore: 0,
   },
   4: {
-    timeLimit: 26,
+    timeLimit: 5,
     noteSpeed: 460,
     frequency: 1.6,
-    targetScore: 31,
+    targetScore: 0,
   },
   5: {
-    timeLimit: 28,
+    timeLimit: 5,
     noteSpeed: 560,
     frequency: 1.8,
-    targetScore: 39,
+    targetScore: 0,
   },
 };
 

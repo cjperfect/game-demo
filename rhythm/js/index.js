@@ -1,5 +1,4 @@
-// 进入游戏, 就开始加载游戏资源
-game.state.start("main"); //启动第一个场景
+game.state.start("main"); //启动游戏
 
 // 游戏提示内容板块
 const gameContainer = document.querySelector(".game-tips-container");
@@ -13,7 +12,7 @@ const gameDom = document.querySelector("#game-container");
 gameDesc.addEventListener("click", (e) => {
   e.currentTarget.classList.add("hidden");
   // 启动游戏
-  game.paused = false;
+  startHide();
 });
 
 // 跳转到游戏启动页
